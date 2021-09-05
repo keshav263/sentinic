@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 
-export default function AverageStats() {
+export default function AverageStats({ revCount, difference, sentiment }) {
 	return (
 		<StatContainer>
-			<ReviewCount>64</ReviewCount>
-			<Difference>+15</Difference>
-			<Sentiment>Good</Sentiment>
+			<ReviewCount>{revCount}</ReviewCount>
+			<Difference>{difference}</Difference>
+			<Sentiment>{sentiment}</Sentiment>
 		</StatContainer>
 	);
 }

@@ -24,7 +24,7 @@ export default function LandingPage() {
 				</KeywordsContainer>
 				<Title>Average Keyword Image</Title>
 				<Row>
-					<AverageStats />
+					<AverageStats sentiment="Good" difference="+15" revCount={132} />
 					<Chart
 						width={"500px"}
 						height={"200px"}

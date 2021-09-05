@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useHistory } from "react-router";
 
 export default function Keywords({ title }) {
+	const history = useHistory();
 	return (
-		<KeywordStat>
+		<KeywordStat
+			onClick={() => history.push({ pathname: "/keyword", state: title })}
+		>
 			<Keyword>{title}</Keyword>
 			<ReviewCount>94</ReviewCount>
 			<DifferenceText>140+</DifferenceText>
