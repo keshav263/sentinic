@@ -7,7 +7,7 @@ import SentimentHighlight from "../components/SentimentHighlight";
 
 export default function KeywordPage(props) {
 	const keyword = useRef(props.location.state);
-	const [texts, setTexts] = useState([
+	const [texts] = useState([
 		{ difference: "+1" },
 		{ difference: "+1" },
 		{ difference: "+1" },

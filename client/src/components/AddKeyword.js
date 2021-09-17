@@ -1,14 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import {
-	SwipeableDrawer,
-	Drawer,
-	TextField,
-	Divider,
-	Button,
-} from "@material-ui/core";
+import { SwipeableDrawer, TextField, Divider, Button } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/core/styles";
+import * as reviewActions from "../store/actions/Review";
+import { useDispatch } from "react-redux";
 const useStyles = makeStyles((theme) => ({
 	margin: {
 		margin: theme.spacing(1),
@@ -24,6 +20,7 @@ export default function AddKeyword({ setKeywords }) {
 	const [open, setOpen] = useState(false);
 	const [keyword, setKeyword] = useState({});
 	const classes = useStyles();
+	const dispatch = useDispatch();
 	return (
 		<>
 			<KeywordStat
@@ -72,8 +69,10 @@ export default function AddKeyword({ setKeywords }) {
 					<Divider style={{ margin: "40px 30px", marginTop: "40px" }} />
 					<Row>
 						<StyledButton
-							onClick={() => {
+							onClick={async () => {
 								setKeywords((prevState) => prevState.concat(keyword));
+								//Fetch URL from Keyword
+								// dispatch(reviewActions.getReviewsForKeyword(keyword))
 								setOpen(false);
 							}}
 							variant="contained"
