@@ -1,10 +1,17 @@
 import React from "react";
 import styled from "styled-components";
+import PositiveIcon from "./PositiveIcon";
+import RedIcon from "./RedIcon";
 
 export default function SentimentHighlight() {
 	return (
 		<Container>
-			<Difference>+1</Difference>
+			<div
+				style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
+			>
+				<PositiveIcon />
+				<Difference>+1</Difference>
+			</div>
 			<div>
 				<Sentiment>Sentiment gain</Sentiment>
 				<Text> Lorem ipsum dolor sit amet, consectetur</Text>
@@ -17,6 +24,7 @@ export default function SentimentHighlight() {
 const Difference = styled.p`
 	color: #19b682;
 	font-weight: 600;
+	padding-left: 5px;
 `;
 
 const Container = styled.div`

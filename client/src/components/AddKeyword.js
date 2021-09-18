@@ -42,7 +42,7 @@ export default function AddKeyword({ setKeywords }) {
 	const onSubmit = async () => {
 		try {
 			setIsLoading(true);
-			await dispatch(reviewActions.getReviewsForKeyword(keyword.url));
+			// await dispatch(reviewActions.getReviewsForKeyword(keyword.url));
 			setKeywords((prevState) => prevState.concat(keyword));
 			setIsLoading(false);
 			setOpen(false);
