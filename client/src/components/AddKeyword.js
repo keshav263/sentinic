@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { SwipeableDrawer, TextField, Divider, Button } from "@material-ui/core";
-import { Autocomplete } from "@material-ui/lab";
-import { makeStyles } from "@material-ui/core/styles";
+import {
+	SwipeableDrawer,
+	TextField,
+	Divider,
+	Button,
+	Autocomplete,
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
+
 import * as reviewActions from "../store/actions/Review";
 import { useDispatch } from "react-redux";
 const useStyles = makeStyles((theme) => ({
 	margin: {
-		margin: theme.spacing(1),
 		"& .MuiOutlinedInput-input": {
 			padding: "10px",
 		},
@@ -15,12 +20,38 @@ const useStyles = makeStyles((theme) => ({
 			padding: 0,
 		},
 	},
+	textField: {
+		"& .MuiOutlinedInput-input": {
+			padding: "10px",
+		},
+	},
+	divider: {
+		"& .css-e34q8v-MuiDivider-wrapper": {
+			position: "relative",
+			top: "50%",
+		},
+	},
 }));
 export default function AddKeyword({ setKeywords }) {
 	const [open, setOpen] = useState(false);
-	const [keyword, setKeyword] = useState({});
+	const [keyword, setKeyword] = useState({ title: "", url: "" });
+	const [isLoading, setIsLoading] = useState(false);
 	const classes = useStyles();
 	const dispatch = useDispatch();
+
+	const onSubmit = async () => {
+		try {
+			setIsLoading(true);
+			await dispatch(reviewActions.getReviewsForKeyword(keyword.url));
+			setKeywords((prevState) => prevState.concat(keyword));
+			setIsLoading(false);
+			setOpen(false);
+		} catch (error) {
+			console.log(error);
+			alert("Something went wrong");
+		}
+	};
+
 	return (
 		<>
 			<KeywordStat
@@ -40,7 +71,7 @@ export default function AddKeyword({ setKeywords }) {
 				}}
 			>
 				<Container>
-					<Title>Add keyword</Title>
+					<Title>Add keyword or url</Title>
 					<Divider style={{ marginTop: "10px" }} />
 					<InfoText>
 						<span style={{ color: "#e78e60" }}>Note!</span> Lorem ipsum dolor
@@ -55,7 +86,9 @@ export default function AddKeyword({ setKeywords }) {
 						options={keywords}
 						getOptionLabel={(option) => option.title}
 						style={{ width: 300 }}
-						onChange={(event, value) => setKeyword(value)}
+						onChange={(event, value) => {
+							setKeyword(value);
+						}}
 						renderInput={(params) => (
 							<StyledTextField
 								{...params}
@@ -66,23 +99,50 @@ export default function AddKeyword({ setKeywords }) {
 						)}
 					/>
 
-					<Divider style={{ margin: "40px 30px", marginTop: "40px" }} />
-					<Row>
-						<StyledButton
-							onClick={async () => {
-								setKeywords((prevState) => prevState.concat(keyword));
-								//Fetch URL from Keyword
-								// dispatch(reviewActions.getReviewsForKeyword(keyword))
-								setOpen(false);
-							}}
-							variant="contained"
-						>
-							Apply
-						</StyledButton>
-						<CancelButton onClick={() => setOpen(false)} variant="contained">
-							cancel
-						</CancelButton>
-					</Row>
+					<Divider
+						flexItem={true}
+						className={classes.divider}
+						style={{ margin: "40px 30px", marginTop: "40px" }}
+					>
+						OR
+					</Divider>
+
+					<p style={{ fontWeight: "bold", margin: "0px 50px" }}>
+						Name your product
+					</p>
+					<TextField
+						value={keyword.title}
+						onChange={(e) => setKeyword({ ...keyword, title: e.target.value })}
+						style={{ width: "300px", margin: "20px 50px", padding: "5" }}
+						className={classes.textField}
+						variant="outlined"
+					/>
+					<p style={{ fontWeight: "bold", margin: "0px 50px" }}>URL</p>
+					<TextField
+						value={keyword.url}
+						onChange={(e) => setKeyword({ ...keyword, url: e.target.value })}
+						style={{ width: "300px", margin: "20px 50px", padding: "5" }}
+						className={classes.textField}
+						variant="outlined"
+					/>
+					{isLoading ? (
+						<lottie-player
+							src="https://assets8.lottiefiles.com/packages/lf20_pMMQPe.json"
+							background="transparent"
+							speed="2"
+							loop
+							autoplay
+						></lottie-player>
+					) : (
+						<Row>
+							<StyledButton onClick={onSubmit} variant="contained">
+								Apply
+							</StyledButton>
+							<CancelButton onClick={() => setOpen(false)} variant="contained">
+								cancel
+							</CancelButton>
+						</Row>
+					)}
 				</Container>
 			</SwipeableDrawer>
 		</>
@@ -157,7 +217,20 @@ const Text = styled.p`
 `;
 
 const keywords = [
-	{ title: "Firestick 4k" },
-	{ title: "Hitachi 47A" },
-	{ title: "Canon 4505" },
+	{
+		title: "Fire TV Stick",
+		url: "https://www.amazon.in/Fire-TV-Stick-Lite-with-Alexa-Voice-Remote-Lite/product-reviews/B07ZZW86G4/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews",
+	},
+	{
+		title: "Noise Air Buds",
+		url: "https://www.amazon.in/Noise-Wireless-Bluetooth-Earbuds-Playtime/product-reviews/B08H8N3RKT/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews",
+	},
+	{
+		title: "Noise Smartwatch",
+		url: "https://www.amazon.in/Noise-Colorfit-Pro-Touch-Control/product-reviews/B07YY1BY5B/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews",
+	},
+	{
+		title: "Fitbit",
+		url: "https://www.amazon.in/Fitbit-FB507BKBK-Smartwatch-Tracking-Included/product-reviews/B07TWFVDWT/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews",
+	},
 ];
