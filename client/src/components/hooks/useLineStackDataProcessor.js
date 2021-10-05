@@ -1,5 +1,5 @@
 export default function lineStackProcessor() {
-	const getLineStackProcessedData = (data) => {
+	const getLineStackProcessedData = (data, algo) => {
 		let dates = [];
 		let positive = 0;
 		let negative = 0;
@@ -9,28 +9,32 @@ export default function lineStackProcessor() {
 			const month = new Date(date).getMonth();
 			let bool = dates.findIndex((da) => da.month === MonthRaw[month]);
 			if (bool === -1) {
-				if (d.logistic_sentiment === "0") {
-					dates.push({
-						month: MonthRaw[month],
-						positive: 0,
-						negative: 1,
-					});
-					negative += 1;
-				} else {
-					dates.push({
-						month: MonthRaw[month],
-						positive: 1,
-						negative: 0,
-					});
-					positive += 1;
+				if (algo === "Logi") {
+					if (d.logistic_sentiment === "0") {
+						dates.push({
+							month: MonthRaw[month],
+							positive: 0,
+							negative: 1,
+						});
+						negative += 1;
+					} else {
+						dates.push({
+							month: MonthRaw[month],
+							positive: 1,
+							negative: 0,
+						});
+						positive += 1;
+					}
 				}
 			} else {
-				if (d.logistic_sentiment === "0") {
-					negative += 1;
-					dates[bool].negative += 1;
-				} else {
-					dates[bool].positive += 1;
-					positive += 1;
+				if (algo === "Logi") {
+					if (d.logistic_sentiment === "0") {
+						negative += 1;
+						dates[bool].negative += 1;
+					} else {
+						dates[bool].positive += 1;
+						positive += 1;
+					}
 				}
 			}
 		});
@@ -44,10 +48,17 @@ export default function lineStackProcessor() {
 			arr.push([d.month, d.positive, d.negative]);
 		});
 
-		let lines = [["Month", "Sentiment"]];
+		let lines = [
+			["Month", "Postive", "Negative"],
+			// ["0", 0, 0],
+		];
 		// eslint-disable-next-line array-callback-return
 		dates.map((s) => {
-			lines.push([s.month, s.positive - s.negative]);
+			lines.push([
+				s.month,
+				(s.positive / (s.positive + s.negative)) * 100,
+				(s.negative / (s.positive + s.negative)) * 100,
+			]);
 		});
 
 		return {

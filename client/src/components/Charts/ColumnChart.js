@@ -28,7 +28,7 @@ export default function ColumnChart({ stackData }) {
 					title: "Month",
 					minValue: 0,
 				},
-				colors: ["#89d7bd", "#9d686a"],
+				colors: ["#89d7bd", "#f23534"],
 				vAxis: {
 					title: "Sentiment count",
 				},

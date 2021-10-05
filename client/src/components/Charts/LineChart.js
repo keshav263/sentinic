@@ -23,11 +23,15 @@ export default function LineChart({ lineData }) {
 			data={lineData}
 			options={{
 				legend: { position: "none" },
-				colors: ["blue"],
+				colors: ["green", "#f23534"],
 				axes: {
 					y: {
 						0: { side: "right" },
 					},
+				},
+				series: {
+					0: { curveType: "function" },
+					1: { curveType: "function" },
 				},
 				animation: {
 					startup: true,

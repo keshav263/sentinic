@@ -76,11 +76,11 @@ export default function AddKeyword({ setKeywords }) {
 					<Title>Add keyword or url</Title>
 					<Divider style={{ marginTop: "10px" }} />
 					<InfoText>
-						<span style={{ color: "#e78e60" }}>Note!</span> Lorem ipsum dolor
-						sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-						incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-						veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-						ea commodo consequat. Duis aute irure dolor in
+						<span style={{ color: "#e78e60" }}>Warning! </span>
+						Adding new keyword will result in recalculating project's data and
+						this can take up to 5 minutes. You will not be able to see the
+						average keyword image and sentiment summary for the project until
+						completion
 					</InfoText>
 					<p style={{ fontWeight: "bold", margin: "20px 50px" }}>Keyword</p>
 					<Autocomplete
