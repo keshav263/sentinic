@@ -1,23 +1,84 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Chart from "react-google-charts";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import AverageStats from "../components/AverageStats";
 import NavBar from "../components/NavBar";
 import SentimentHighlight from "../components/SentimentHighlight";
 
 export default function KeywordPage(props) {
+	const data = useSelector((state) =>
+		state.Review.keywords.filter((key) => {
+			if (key.title === props.location.state) return true;
+			else return false;
+		})
+	);
+	const [stackData, setStackData] = useState([]);
+	console.log(data);
 	const keyword = useRef(props.location.state);
-	const [texts] = useState([
-		{ difference: "+1" },
-		{ difference: "+1" },
-		{ difference: "+1" },
-		{ difference: "+1" },
-		{ difference: "+1" },
-		{ difference: "+1" },
-		{ difference: "+1" },
-	]);
+
+	const [texts, setTexts] = useState([]);
+
+	useEffect(() => {
+		let sentiment = [];
+		for (let index = 0; index < 7; index++) {
+			console.log(data[0].data[index].logistic_sentiment);
+			if (data[0].data[index].logistic_sentiment === "0") {
+				sentiment.push({
+					difference: "-1",
+					text: data[0].data[index].review,
+					date: data[0].data[index].date,
+				});
+			} else {
+				sentiment.push({
+					difference: "+1",
+					text: data[0].data[index].review,
+					date: data[0].data[index].date,
+				});
+			}
+		}
+		setTexts(sentiment);
+	}, []);
+
+	console.log(texts);
+
+	useEffect(() => {
+		let dates = [];
+		data[0].data.map((d) => {
+			let date = d.date;
+			const month = new Date(date).getMonth();
+			let bool = dates.findIndex((da) => da.month === MonthRaw[month]);
+			if (bool === -1) {
+				if (d.logistic_sentiment === "0")
+					dates.push({ month: MonthRaw[month], positive: 0, negative: 1 });
+				else dates.push({ month: MonthRaw[month], positive: 1, negative: 0 });
+			} else {
+				if (d.logistic_sentiment === "0") dates[bool].negative += 1;
+				else dates[bool].positive += 1;
+			}
+		});
+		dates.sort(function (a, b) {
+			return MonthRaw.indexOf(a.month) - MonthRaw.indexOf(b.month);
+		});
+
+		let arr = [["Month", "Positive", "Negative"]];
+		dates.map((d) => {
+			arr.push([d.month, d.positive, d.negative]);
+		});
+		setStackData(arr);
+	}, []);
+
+	console.log(stackData);
+
 	const getHighlights = () => {
-		return texts.map((text, index) => <SentimentHighlight key={index} />);
+		return texts.map((text, index) => (
+			<SentimentHighlight
+				difference={text.difference}
+				review={text.text}
+				key={index}
+				date={text.date}
+			/>
+		));
 	};
 	return (
 		<>
@@ -87,24 +148,18 @@ export default function KeywordPage(props) {
 							height={"250px"}
 							chartType="ColumnChart"
 							loader={<div>Loading Chart</div>}
-							data={[
-								["City", "2010 Population", "2000 Population"],
-								["New York City, NY", 8175000, 8008000],
-								["Los Angeles, CA", 3792000, 3694000],
-								["Chicago, IL", 2695000, 2896000],
-								["Houston, TX", 2099000, 1953000],
-								["Philadelphia, PA", 1526000, 1517000],
-							]}
+							data={stackData}
 							options={{
+								title: "Sentiment across months",
 								chartArea: { width: "100%", height: "75%" },
 								isStacked: true,
 								hAxis: {
-									title: "Total Population",
+									title: "Month",
 									minValue: 0,
 								},
-								colors: ["#89d7bd", "#8f9298", "#9d686a"],
+								colors: ["#89d7bd", "#9d686a"],
 								vAxis: {
-									title: "City",
+									title: "Sentiment count",
 								},
 								animation: {
 									startup: true,
@@ -163,3 +218,18 @@ const Column = styled.div`
 	flex-direction: column;
 	width: 45vw;
 `;
+
+const MonthRaw = [
+	"Jan",
+	"Feb",
+	"Mar",
+	"Apr",
+	"May",
+	"Jun",
+	"Jul",
+	"Aug",
+	"Sept",
+	"Oct",
+	"Nov",
+	"Dec",
+];

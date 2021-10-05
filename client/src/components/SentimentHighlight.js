@@ -3,26 +3,29 @@ import styled from "styled-components";
 import PositiveIcon from "./PositiveIcon";
 import RedIcon from "./RedIcon";
 
-export default function SentimentHighlight() {
+export default function SentimentHighlight({ review, difference, date }) {
 	return (
 		<Container>
 			<div
 				style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
 			>
-				<PositiveIcon />
-				<Difference>+1</Difference>
+				{difference === "+1" ? <PositiveIcon /> : <RedIcon />}
+				<Difference
+					style={{ color: difference === "+1" ? "#19b682" : "#f33534" }}
+				>
+					{difference}
+				</Difference>
 			</div>
 			<div>
-				<Sentiment>Sentiment gain</Sentiment>
-				<Text> Lorem ipsum dolor sit amet, consectetur</Text>
+				<Sentiment>Sentiment {difference === "+1" ? "gain" : "loss"}</Sentiment>
+				<Text>{review}</Text>
 			</div>
-			<Date>17 Mar 2020</Date>
+			<DateText>{new Date(date).toLocaleDateString()}</DateText>
 		</Container>
 	);
 }
 
 const Difference = styled.p`
-	color: #19b682;
 	font-weight: 600;
 	padding-left: 5px;
 `;
@@ -33,7 +36,7 @@ const Container = styled.div`
 	overflow: hidden;
 	width: 40vw;
 	padding: 10px;
-	/* height: 6vh; */
+	height: 6vh;
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
@@ -45,14 +48,21 @@ const Container = styled.div`
 const Sentiment = styled.p`
 	color: #9c9faa;
 	margin: 0;
+	width: 20vw;
 `;
 
 const Text = styled.p`
-	margin: 0;
+	text-align: left;
+	margin: 10px;
+	margin-left: 0;
 	font-weight: 500;
+	width: 20vw;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 `;
 
-const Date = styled.p`
+const DateText = styled.p`
 	color: #868996;
 	font-size: 0.7rem;
 `;

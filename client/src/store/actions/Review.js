@@ -1,6 +1,7 @@
 import { url } from "../../constants/url";
+export const GET_SENTIMENT = "GET_SENTIMENT";
 
-export const getReviewsForKeyword = (amazonUrl) => {
+export const getReviewsForKeyword = (amazonUrl, keyword) => {
 	return async (dispatch) => {
 		try {
 			const response = await fetch(`${url}/scrape-reviews`, {
@@ -14,6 +15,10 @@ export const getReviewsForKeyword = (amazonUrl) => {
 			});
 			const responseJson = await response.json();
 			console.log(responseJson);
+			dispatch({
+				type: GET_SENTIMENT,
+				payload: { data: responseJson.data, keyword },
+			});
 		} catch (error) {
 			console.log(error);
 			throw new Error();

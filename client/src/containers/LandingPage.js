@@ -5,11 +5,13 @@ import Keywords from "../components/Keywords";
 import Chart from "react-google-charts";
 import AverageStats from "../components/AverageStats";
 import NavBar from "../components/NavBar";
+import { useSelector } from "react-redux";
 
 export default function LandingPage() {
-	const [keywords, setKeywords] = useState([]);
+	const key = useSelector((state) => state.Review.keywords);
+	const [keywords, setKeywords] = useState(key);
 	const getAllKeywords = () => {
-		return keywords.map((key, index) => {
+		return keywords?.map((key, index) => {
 			return <Keywords key={index} title={key.title} />;
 		});
 	};
