@@ -40,6 +40,7 @@ export default function LoadingPage(props) {
 		return () => {
 			clearInterval(timer);
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 	return (
 		<Container>

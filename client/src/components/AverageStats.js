@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import PositiveIcon from "./PositiveIcon";
+import RedIcon from "./RedIcon";
 
 export default function AverageStats({ revCount, difference, sentiment }) {
 	return (
@@ -14,10 +15,10 @@ export default function AverageStats({ revCount, difference, sentiment }) {
 					justifyContent: "center",
 				}}
 			>
-				<PositiveIcon />
+				{difference > 0 ? <PositiveIcon /> : <RedIcon />}
 				<Difference>{difference}</Difference>
 			</div>
-			<Sentiment>{sentiment}</Sentiment>
+			<Sentiment difference={difference}>{sentiment}</Sentiment>
 		</StatContainer>
 	);
 }
@@ -42,7 +43,7 @@ const ReviewCount = styled.p`
 const Difference = styled.p`
 	margin: 0;
 	font-size: 0.7rem;
-	color: #28b285;
+	color: ${(props) => (props.difference > 0 ? "#28b285" : "#f33534")};
 	padding-left: 4px;
 `;
 
