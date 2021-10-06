@@ -17,5 +17,5 @@ with open("random_forest.p",'rb') as pickled:
         pred.append(prediction)
         count[prediction]+=1
     print(count)
-    df["random_forest"]=pred   
+    df["random_forest_sentiment"]=pred   
     df.to_csv("amazon_review.csv")    

@@ -17,5 +17,5 @@ with open("support_vector_machine.p",'rb') as pickled:
         pred.append(prediction)
         count[prediction]+=1
     print(count)
-    df["support_vector_machine"]=pred   
+    df["support_vector_sentiment"]=pred   
     df.to_csv("amazon_review.csv")    

@@ -23,24 +23,27 @@ app.post("/scrape-reviews", (req, res) => {
     logistic.stdout.on("data", function (data) {
       console.log("Pipe data from python script ...");
       let lr = JSON.parse(data.toString());
-      // const randomForest = spawn("python", ["rf.py"])
-      // randomForest.stdout.on("data", function (data) {
-      // let rf = JSON.parse(data.toString())
-      // const supportVector = spawn("python", ["svm.py"])
-      // supportVector.stdout.on("data", function (data) {
-      // let svm = JSON.parse(data.toString())
-      csv()
-        .fromFile("amazon_review.csv")
-        .then(function (obj) {
-          res.send({
-            status: "Analysed successfully",
-            data: obj,
-            positiveCount: lr[1],
-            negativeCount: lr[0],
-          });
-          // });
-          // })
+      const randomForest = spawn("python", ["rf.py"]);
+      randomForest.stdout.on("data", function (data) {
+        let rf = JSON.parse(data.toString());
+        const supportVector = spawn("python", ["svm.py"]);
+        supportVector.stdout.on("data", function (data) {
+          let svm = JSON.parse(data.toString());
+          console.log(lr);
+          console.log(rf);
+          console.log(svm);
+          csv()
+            .fromFile("amazon_review.csv")
+            .then(function (obj) {
+              res.status(200).send({
+                status: "Analysed successfully",
+                data: obj,
+                positiveCount: (lr[1] + rf[1] + svm[1]) / 3,
+                negativeCount: (lr[0] + rf[0] + svm[0]) / 3,
+              });
+            });
         });
+      });
     });
     logistic.on("close", (code) => {
       console.log(`child process close all stdio with code ${code}`);
@@ -60,13 +63,16 @@ app.post("/get-sentiment", async (req, res) => {
   if (!text) {
     return res.status(400).send({ message: "URL Required" });
   }
-  const sentiment = spawn("python", ["scraper.py", text]);
+  const sentiment = spawn("python", ["sentiment.py", text]);
   sentiment.stdout.on("data", function (data) {
     console.log("Pipe data from python script ...");
     let sent = JSON.parse(data.toString());
-    s = sent[0] + sent[1] + send[2];
-    if (s <= 1) st = 1;
-    else st = 0;
+    console.log(sent);
+    let st = 0;
+    s = sent[0] + sent[1] + sent[2];
+    if (s <= 1) st = 0;
+    else st = 1;
+    console.log(st);
     res.status(200).send({
       status: "Analysed successfully",
       logiSentiment: sent[0],
