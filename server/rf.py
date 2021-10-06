@@ -3,7 +3,7 @@ import warnings
 import pandas as pd;
 warnings.filterwarnings("ignore")
    
-with open("logistic_regression.p",'rb') as pickled:
+with open("random_forest.p",'rb') as pickled:
     data=pickle.load(pickled)
     model=data['model']
     vectorizer=data['vectorizer']
@@ -17,5 +17,5 @@ with open("logistic_regression.p",'rb') as pickled:
         pred.append(prediction)
         count[prediction]+=1
     print(count)
-    df["logistic_sentiment"]=pred   
+    df["random_forest"]=pred   
     df.to_csv("amazon_review.csv")    
