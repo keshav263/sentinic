@@ -4,6 +4,7 @@ import NavBar from "../components/NavBar";
 import * as reviewActions from "../store/actions/Review";
 import { TextField } from "@mui/material";
 import { useDispatch } from "react-redux";
+import { motion } from "framer-motion";
 
 export default function SentimentPage() {
 	const [text, setText] = useState("");
@@ -28,6 +29,10 @@ export default function SentimentPage() {
 	useEffect(() => {
 		const listener = (event) => {
 			if (event.code === "Enter" || event.code === "NumpadEnter") {
+				setLogiSentiment(null);
+				setRfSentiment(null);
+				setSentiment(null);
+				setSvmSentiment(null);
 				onSubmit();
 			}
 		};
@@ -39,7 +44,29 @@ export default function SentimentPage() {
 	return (
 		<>
 			<NavBar />
-			<Container>
+			<Container style={{ position: "relative" }}>
+				{(sentiment === 0 || sentiment === 1) && (
+					<AnimationContainer
+						initial={{ visibility: "hidden" }}
+						animate={{ visibility: "visible" }}
+						transition={{ duration: 2, delay: 3 }}
+						style={{ position: "absolute", top: "10%", zIndex: 1 }}
+					>
+						<lottie-player
+							src={
+								isLoading
+									? "https://assets7.lottiefiles.com/packages/lf20_rIH9ma.json"
+									: sentiment === 1
+									? "https://assets2.lottiefiles.com/packages/lf20_xlbwcmun.json"
+									: "https://assets2.lottiefiles.com/packages/lf20_pojzngga.json"
+							}
+							background="transparent"
+							speed="1"
+							loop
+							autoplay
+						></lottie-player>
+					</AnimationContainer>
+				)}
 				<StyledTextField
 					variant="standard"
 					value={text}
@@ -49,33 +76,54 @@ export default function SentimentPage() {
 				<EmojisContainer>
 					{(logiSentiment === 0 || logiSentiment === 1) && (
 						<div>
-							<Image1
-								src={
-									logiSentiment === 0
-										? "https://img.icons8.com/color/104/000000/sad--v1.png"
-										: "https://img.icons8.com/fluency/104/000000/smiling.png"
-								}
-								alt="Sad Emoji"
-							/>
-							<Image2
-								src={
-									svmSentiment === 0
-										? "https://img.icons8.com/color/104/000000/sad--v1.png"
-										: "https://img.icons8.com/fluency/104/000000/smiling.png"
-								}
-								alt="Happy Emoji"
-							/>
-							<Image3
-								src={
-									rfSentiment === 0
-										? "https://img.icons8.com/color/104/000000/sad--v1.png"
-										: "https://img.icons8.com/fluency/104/000000/smiling.png"
-								}
-								alt="Happy Emoji"
-							/>
+							<Emoji
+								initial={{ y: 300 }}
+								animate={{ y: 0 }}
+								transition={{ duration: 1, delay: 0 }}
+							>
+								<Image1
+									src={
+										logiSentiment === 0
+											? "https://img.icons8.com/color/104/000000/sad--v1.png"
+											: "https://img.icons8.com/fluency/104/000000/smiling.png"
+									}
+									alt="Sad Emoji"
+								/>
+								<p>Logistic Regression</p>
+							</Emoji>
+							<Emoji
+								initial={{ y: 300 }}
+								animate={{ y: 0 }}
+								transition={{ duration: 1, delay: 1 }}
+							>
+								<Image2
+									src={
+										svmSentiment === 0
+											? "https://img.icons8.com/color/104/000000/sad--v1.png"
+											: "https://img.icons8.com/fluency/104/000000/smiling.png"
+									}
+									alt="Happy Emoji"
+								/>
+								<p>Support vector machine</p>
+							</Emoji>
+							<Emoji
+								initial={{ y: 300 }}
+								animate={{ y: 0 }}
+								transition={{ duration: 1, delay: 2 }}
+							>
+								<Image3
+									src={
+										rfSentiment === 0
+											? "https://img.icons8.com/color/104/000000/sad--v1.png"
+											: "https://img.icons8.com/fluency/104/000000/smiling.png"
+									}
+									alt="Happy Emoji"
+								/>
+								<p>Random Forest</p>
+							</Emoji>
 						</div>
 					)}
-					{(isLoading || sentiment === 1 || sentiment === 0) && (
+					{isLoading && (
 						<AnimationContainer>
 							<lottie-player
 								src={
@@ -98,6 +146,13 @@ export default function SentimentPage() {
 	);
 }
 
+const Emoji = styled(motion.div)`
+	text-align: center;
+	> p {
+		font-family: "Dancing Script", cursive;
+	}
+`;
+
 const EmojisContainer = styled.div`
 	margin-top: 40px;
 	width: 40vw;
@@ -107,16 +162,16 @@ const EmojisContainer = styled.div`
 	}
 `;
 
-const AnimationContainer = styled.div`
+const AnimationContainer = styled(motion.div)`
 	margin-top: 20px;
 	height: 128px;
 `;
 
-const Image1 = styled.img``;
+const Image1 = styled(motion.img)``;
 
 const Image3 = styled(Image1)``;
 
-const Image2 = styled.img``;
+const Image2 = styled(Image1)``;
 
 const StyledTextField = styled(TextField)`
 	& .css-1x51dt5-MuiInputBase-input-MuiInput-input {

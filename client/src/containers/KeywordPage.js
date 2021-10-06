@@ -27,7 +27,7 @@ export default function KeywordPage(props) {
 	const [lineData, setLineData] = useState([]);
 	const [getHighlight] = useSentimentHighlight();
 	const [getLineStackProcessedData] = useLineStackDataProcessor();
-	const [algo, setAlgo] = useState("Logi");
+	const [algo, setAlgo] = useState("SVM");
 
 	const handleChange = (event, newValue) => {
 		setAlgo(newValue);

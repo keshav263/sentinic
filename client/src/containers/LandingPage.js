@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import AddKeyword from "../components/AddKeyword";
 import Keywords from "../components/Keywords";
@@ -6,15 +6,44 @@ import Chart from "react-google-charts";
 import AverageStats from "../components/AverageStats";
 import NavBar from "../components/NavBar";
 import { useSelector } from "react-redux";
+import { CircularProgress } from "@mui/material";
+
+import useLineStackAverageDataProcessor from "../components/hooks/useLineStackAverageDataProcessor";
 
 export default function LandingPage() {
 	const key = useSelector((state) => state.Review.keywords);
+	console.log(key);
 	const [keywords, setKeywords] = useState(key);
+	const [stackData, setStackData] = useState([]);
+	const [lineData, setLineData] = useState([]);
+
+	const [positiveCount, setPositiveCount] = useState(0);
+	const [negativeCount, setNegativeCount] = useState(0);
+	const [getLineStackProcessedData] = useLineStackAverageDataProcessor();
+	console.log(keywords);
 	const getAllKeywords = () => {
-		return keywords?.map((key, index) => {
-			return <Keywords key={index} title={key.title} />;
+		return key?.map((key, index) => {
+			return (
+				<Keywords
+					key={index}
+					title={key.title}
+					positiveCount={key.positiveCount}
+					negativeCount={key.negativeCount}
+				/>
+			);
 		});
 	};
+
+	useEffect(() => {
+		const { positive, negative, stack, lines } = getLineStackProcessedData(key);
+		setStackData(stack);
+		setLineData(lines);
+		setPositiveCount(positive);
+		setNegativeCount(negative);
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [key]);
+
 	return (
 		<>
 			<NavBar />
@@ -25,104 +54,121 @@ export default function LandingPage() {
 					<AddKeyword setKeywords={setKeywords} />
 				</KeywordsContainer>
 				<Title>Average Keyword Image</Title>
-				<Row>
-					<AverageStats sentiment="Good" difference="+15" revCount={132} />
-					<Chart
-						width={"500px"}
-						height={"200px"}
-						style={{ marginLeft: "20px" }}
-						chartType="Line"
-						loader={<div>Loading Chart</div>}
-						data={[
-							["", ""],
-							[1, 1],
-							[2, 1],
-							[3, 4],
-							[4, 1],
-							[5, 5],
-							[6, 1],
-							[7, 7],
-							[8, 1],
-							[9, 1],
-							[10, 5],
-							[11, 5],
-							[12, 5],
-							[13, 5],
-							[14, 5],
-						]}
-						options={{
-							legend: { position: "none" },
-							colors: ["blue"],
-							axes: {
-								y: {
-									0: { side: "right" },
+				{keywords.length > 0 ? (
+					<Row>
+						<AverageStats
+							difference={positiveCount - negativeCount}
+							revCount={positiveCount + negativeCount}
+						/>
+						<Chart
+							width={"500px"}
+							height={"200px"}
+							style={{ marginLeft: "20px" }}
+							chartType="Line"
+							loader={
+								<div
+									style={{
+										width: "500px",
+										height: "200px",
+										display: "flex",
+										alignItems: "center",
+										justifyContent: "center",
+									}}
+								>
+									<CircularProgress />
+								</div>
+							}
+							data={lineData}
+							options={{
+								legend: { position: "none" },
+								colors: ["green", "#f23534"],
+								axes: {
+									y: {
+										0: { side: "right" },
+									},
 								},
-							},
-							animation: {
-								startup: true,
-								easing: "linear",
-								duration: 1500,
-							},
-						}}
-						chartEvents={[
-							{
-								eventName: "animationfinish",
-								callback: () => {
-									console.log("Animation Finished");
+								animation: {
+									startup: true,
+									easing: "linear",
+									duration: 1500,
 								},
-							},
-						]}
-						rootProps={{ "data-testid": "3" }}
-					/>
-					<Chart
-						width={"500px"}
-						height={"200px"}
-						chartType="ColumnChart"
-						loader={<div>Loading Chart</div>}
-						data={[
-							["City", "2010 Population", "2000 Population"],
-							["New York City, NY", 8175000, 8008000],
-							["Los Angeles, CA", 3792000, 3694000],
-							["Chicago, IL", 2695000, 2896000],
-							["Houston, TX", 2099000, 1953000],
-							["Philadelphia, PA", 1526000, 1517000],
-						]}
-						options={{
-							title: "Population of Largest U.S. Cities",
-							chartArea: { width: "70%" },
-							isStacked: true,
-							hAxis: {
-								title: "Total Population",
-								minValue: 0,
-							},
-							colors: ["#89d7bd", "#8f9298", "#9d686a"],
-							vAxis: {
-								title: "City",
-							},
-							animation: {
-								startup: true,
-								easing: "linear",
-								duration: 1500,
-							},
-							legend: { position: "none" },
+							}}
+							chartEvents={[
+								{
+									eventName: "animationfinish",
+									callback: () => {
+										console.log("Animation Finished");
+									},
+								},
+							]}
+							rootProps={{ "data-testid": "3" }}
+						/>
+						<Chart
+							width={"500px"}
+							height={"250px"}
+							chartType="ColumnChart"
+							loader={
+								<div
+									style={{
+										width: "500px",
+										height: "200px",
+										display: "flex",
+										alignItems: "center",
+										justifyContent: "center",
+									}}
+								>
+									<CircularProgress />
+								</div>
+							}
+							data={stackData}
+							options={{
+								title: "Average sentiment across months",
+								chartArea: { width: "70%" },
+								isStacked: true,
+								hAxis: {
+									title: "Month",
+									minValue: 0,
+								},
+								colors: ["#89d7bd", "#f23534"],
+								vAxis: {
+									title: "Sentiment Average",
+								},
+								animation: {
+									startup: true,
+									easing: "linear",
+									duration: 1500,
+								},
+								legend: { position: "none" },
 
-							series: {
-								0: { targetAxisIndex: 1 },
-								1: { targetAxisIndex: 1 },
-							},
-						}}
-						chartEvents={[
-							{
-								eventName: "animationfinish",
-								callback: () => {
-									console.log("Animation Finished");
+								series: {
+									0: { targetAxisIndex: 1 },
+									1: { targetAxisIndex: 1 },
 								},
-							},
-						]}
-						// For tests
-						rootProps={{ "data-testid": "3" }}
-					/>
-				</Row>
+							}}
+							chartEvents={[
+								{
+									eventName: "animationfinish",
+									callback: () => {
+										console.log("Animation Finished");
+									},
+								},
+							]}
+							// For tests
+							rootProps={{ "data-testid": "3" }}
+						/>
+					</Row>
+				) : (
+					<div
+						style={{
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "center",
+							height: "30vh",
+						}}
+					>
+						<p>Add keyword to view average</p>
+					</div>
+				)}
 			</Container>
 		</>
 	);
@@ -130,6 +176,7 @@ export default function LandingPage() {
 
 const Row = styled.div`
 	display: flex;
+	align-items: center;
 `;
 
 const Container = styled.div`

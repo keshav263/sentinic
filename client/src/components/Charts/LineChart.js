@@ -12,6 +12,8 @@ export default function LineChart({ lineData }) {
 			loader={
 				<div
 					style={{
+						width: "400px",
+						height: "200px",
 						display: "flex",
 						alignItems: "center",
 						justifyContent: "center",

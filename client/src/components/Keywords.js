@@ -1,23 +1,46 @@
 import React from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router";
+import RedIcon from "./RedIcon";
+import PositiveIcon from "./PositiveIcon";
 
-export default function Keywords({ title }) {
+export default function Keywords({ title, positiveCount, negativeCount }) {
 	const history = useHistory();
 	return (
 		<KeywordStat
+			style={{
+				backgroundColor:
+					positiveCount - negativeCount > 0 ? "#ddf4eb" : "#ffe2e3",
+			}}
 			onClick={() => history.push({ pathname: "/keyword", state: title })}
 		>
 			<Keyword>{title}</Keyword>
-			<ReviewCount>94</ReviewCount>
-			<DifferenceText>140+</DifferenceText>
-			<Sentiment>Good</Sentiment>
+			<ReviewCount>{positiveCount + negativeCount}</ReviewCount>
+			<div
+				style={{
+					display: "flex",
+					alignItems: "center",
+					justifyContent: "center",
+				}}
+			>
+				{positiveCount - negativeCount > 0 ? <PositiveIcon /> : <RedIcon />}
+
+				<DifferenceText
+					style={{
+						color: positiveCount - negativeCount > 0 ? "#28b285" : "#f33534",
+					}}
+				>
+					{positiveCount - negativeCount}
+				</DifferenceText>
+			</div>
+			<Sentiment>
+				{positiveCount - negativeCount > 0 ? "Good" : "Bad"}
+			</Sentiment>
 		</KeywordStat>
 	);
 }
 
 const KeywordStat = styled.div`
-	background-color: #ddf4eb;
 	border-radius: 10px;
 	height: 180px;
 	box-sizing: border-box;

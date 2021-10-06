@@ -17,7 +17,12 @@ export const getReviewsForKeyword = (amazonUrl, keyword) => {
 			console.log(responseJson);
 			dispatch({
 				type: GET_SENTIMENT,
-				payload: { data: responseJson.data, keyword },
+				payload: {
+					data: responseJson.data,
+					keyword,
+					positiveCount: responseJson.positiveCount,
+					negativeCount: responseJson.negativeCount,
+				},
 			});
 		} catch (error) {
 			console.log(error);

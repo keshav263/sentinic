@@ -11,6 +11,8 @@ export default function ColumnChart({ stackData }) {
 			loader={
 				<div
 					style={{
+						width: "550px",
+						height: "250px",
 						display: "flex",
 						alignItems: "center",
 						justifyContent: "center",
