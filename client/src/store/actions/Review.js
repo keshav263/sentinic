@@ -25,3 +25,25 @@ export const getReviewsForKeyword = (amazonUrl, keyword) => {
 		}
 	};
 };
+
+export const getSentiment = (text) => {
+	return async (dispatch) => {
+		try {
+			const response = await fetch(`${url}/get-sentiment`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					text,
+				}),
+			});
+			const responseJson = await response.json();
+			console.log(responseJson);
+			return responseJson;
+		} catch (error) {
+			console.log(error);
+			throw new Error();
+		}
+	};
+};

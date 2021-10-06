@@ -1,11 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import Pic from "../assets/stat.png";
+import { useHistory } from "react-router";
 export default function NavBar() {
+	const history = useHistory();
 	return (
 		<Container>
 			<img style={{ marginRight: 15 }} src={Pic} alt="Logo" />
 			<Logo>sentinic</Logo>
+			<Text onClick={() => history.push("/sentiment")}>Try it out!</Text>
 		</Container>
 	);
 }
@@ -25,4 +28,13 @@ const Logo = styled.p`
 	margin: 0;
 	font-weight: bold;
 	font-size: 1.3rem;
+	margin-right: auto;
+`;
+
+const Text = styled.p`
+	color: #fff;
+	margin-right: 20px;
+	font-weight: bold;
+	font-size: 1rem;
+	cursor: pointer;
 `;
