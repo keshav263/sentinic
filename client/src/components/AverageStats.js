@@ -16,7 +16,7 @@ export default function AverageStats({ revCount, difference, sentiment }) {
 				}}
 			>
 				{difference > 0 ? <PositiveIcon /> : <RedIcon />}
-				<Difference>{difference}</Difference>
+				<Difference>{difference.toFixed(2)}</Difference>
 			</div>
 			<Sentiment difference={difference}>{sentiment}</Sentiment>
 		</StatContainer>

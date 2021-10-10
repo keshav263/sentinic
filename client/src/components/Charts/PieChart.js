@@ -14,16 +14,24 @@ export default function PieChart({ positiveCount, negativeCount }) {
 			})}
 			animate
 			labelPosition={60}
-			style={{ width: "250px" }}
+			style={{ width: "350px", height: "300px" }}
 			data={[
 				{
 					title: "Positive",
-					value: (positiveCount / (positiveCount + negativeCount)) * 100,
+					value:
+						(
+							positiveCount.toFixed(2) /
+							(positiveCount + negativeCount).toFixed(2)
+						).toFixed(2) * 100,
 					color: "#05af71",
 				},
 				{
 					title: "Negative",
-					value: (negativeCount / (positiveCount + negativeCount)) * 100,
+					value:
+						(
+							negativeCount.toFixed(2) /
+							(positiveCount + negativeCount).toFixed(2)
+						).toFixed(2) * 100,
 					color: "#f23534",
 				},
 			]}

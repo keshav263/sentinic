@@ -30,7 +30,7 @@ export default function Keywords({ title, positiveCount, negativeCount }) {
 						color: positiveCount - negativeCount > 0 ? "#28b285" : "#f33534",
 					}}
 				>
-					{positiveCount - negativeCount}
+					{(positiveCount - negativeCount).toFixed(2)}
 				</DifferenceText>
 			</div>
 			<Sentiment>

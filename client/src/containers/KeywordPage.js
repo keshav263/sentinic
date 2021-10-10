@@ -118,21 +118,13 @@ export default function KeywordPage(props) {
 							positiveCount={positiveCount}
 							negativeCount={negativeCount}
 						/>
-						<SubTitle>Logistic Regression</SubTitle>
-					</PieColumn>
-					<PieColumn>
-						<PieChart
-							positiveCount={positiveCount}
-							negativeCount={negativeCount}
-						/>
-						<SubTitle>Support Vector Machine</SubTitle>
-					</PieColumn>
-					<PieColumn>
-						<PieChart
-							positiveCount={positiveCount}
-							negativeCount={negativeCount}
-						/>
-						<SubTitle>Random Forest</SubTitle>
+						<SubTitle>
+							{algo === "Logi"
+								? "Logistic Regression"
+								: algo === "SVM"
+								? "Support vector machine"
+								: "Random Forest"}
+						</SubTitle>
 					</PieColumn>
 				</PieContainer>
 			</Container>
