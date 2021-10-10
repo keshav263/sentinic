@@ -16,6 +16,34 @@ export default function getHighlight() {
 						date: data[0].data[index].date,
 					});
 				}
+			} else if (algo === "SVM") {
+				if (data[0].data[index].support_vector_sentiment === "0") {
+					sentiment.push({
+						difference: "-1",
+						text: data[0].data[index].review,
+						date: data[0].data[index].date,
+					});
+				} else {
+					sentiment.push({
+						difference: "+1",
+						text: data[0].data[index].review,
+						date: data[0].data[index].date,
+					});
+				}
+			} else {
+				if (data[0].data[index].random_forest_sentiment === "0") {
+					sentiment.push({
+						difference: "-1",
+						text: data[0].data[index].review,
+						date: data[0].data[index].date,
+					});
+				} else {
+					sentiment.push({
+						difference: "+1",
+						text: data[0].data[index].review,
+						date: data[0].data[index].date,
+					});
+				}
 			}
 		}
 		return sentiment;

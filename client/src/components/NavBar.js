@@ -6,8 +6,19 @@ export default function NavBar() {
 	const history = useHistory();
 	return (
 		<Container>
-			<img style={{ marginRight: 15 }} src={Pic} alt="Logo" />
-			<Logo>sentinic</Logo>
+			<div
+				style={{
+					cursor: "pointer",
+					display: "flex",
+					alignItems: "center",
+					justifyContent: "center",
+					marginRight: "auto",
+				}}
+				onClick={() => history.push("/home")}
+			>
+				<img style={{ marginRight: 15 }} src={Pic} alt="Logo" />
+				<Logo>sentinic</Logo>
+			</div>
 			<Text onClick={() => history.push("/sentiment")}>Try it out!</Text>
 		</Container>
 	);
@@ -28,7 +39,6 @@ const Logo = styled.p`
 	margin: 0;
 	font-weight: bold;
 	font-size: 1.3rem;
-	margin-right: auto;
 `;
 
 const Text = styled.p`

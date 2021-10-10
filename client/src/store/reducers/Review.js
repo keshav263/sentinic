@@ -10,6 +10,8 @@ export default function ReviewReducer(state = initialState, action) {
 			const key = state.keywords.concat({
 				title: action.payload.keyword,
 				data: action.payload.data,
+				positiveCount: action.payload.positiveCount,
+				negativeCount: action.payload.negativeCount,
 			});
 
 			return {
