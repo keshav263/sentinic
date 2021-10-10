@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"start": "node app.js",
+		"start": "node index.js",
 		"pm2-start": "pm2 start ./bin/www",
 		"build": "echo something is being built!",
 		"test": "nodemon app.js"
