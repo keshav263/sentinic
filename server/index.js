@@ -50,8 +50,16 @@ app.post("/scrape-reviews", (req, res) => {
       if (code === 0) {
         console.log(chalk.redBright(`Code 0`));
       }
+      if (code === 1) {
+        return res
+          .status(400)
+          .send({ success: false, message: "URL couldn't be scraped" });
+      }
     });
   });
+  // main.on("close", (code) => {
+  //   console.log(chalk.redBright("Code 0 on Scraper"));
+  // });
 });
 
 app.get("/", (req, res) => {
