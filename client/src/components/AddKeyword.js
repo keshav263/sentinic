@@ -50,6 +50,8 @@ export default function AddKeyword({ setKeywords }) {
 			setOpen(false);
 		} catch (error) {
 			console.log(error);
+			setIsLoading(false);
+			setOpen(false);
 			alert("Something went wrong");
 		}
 	};
@@ -234,5 +236,13 @@ const keywords = [
 	{
 		title: "Fitbit",
 		url: "https://www.amazon.in/Fitbit-FB507BKBK-Smartwatch-Tracking-Included/product-reviews/B07TWFVDWT/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews",
+	},
+	{
+		title: "HDMI Cable",
+		url: "https://www.amazon.in/Mediabridge-FLEX-Ethernet-Category-Certified/product-reviews/B004LTE5JI/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews",
+	},
+	{
+		title: "Headphones",
+		url: "https://www.amazon.in/Bassbuds-Duo-Headphones-Water-Resistant-Cancelling/product-reviews/B09DD9SX9Z/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews",
 	},
 ];

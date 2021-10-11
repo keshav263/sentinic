@@ -19,19 +19,13 @@ export default function PieChart({ positiveCount, negativeCount }) {
 				{
 					title: "Positive",
 					value:
-						(
-							positiveCount.toFixed(2) /
-							(positiveCount + negativeCount).toFixed(2)
-						).toFixed(2) * 100,
+						(positiveCount / (positiveCount + negativeCount)).toFixed(1) * 100,
 					color: "#05af71",
 				},
 				{
 					title: "Negative",
 					value:
-						(
-							negativeCount.toFixed(2) /
-							(positiveCount + negativeCount).toFixed(2)
-						).toFixed(2) * 100,
+						(negativeCount / (positiveCount + negativeCount)).toFixed(1) * 100,
 					color: "#f23534",
 				},
 			]}

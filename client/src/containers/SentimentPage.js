@@ -15,13 +15,18 @@ export default function SentimentPage() {
 	const [sentiment, setSentiment] = useState(null);
 	const dispatch = useDispatch();
 	const onSubmit = useCallback(async () => {
-		setIsLoading(true);
-		const response = await dispatch(reviewActions.getSentiment(text));
-		setIsLoading(false);
-		setLogiSentiment(response.logiSentiment);
-		setRfSentiment(response.rfSentiment);
-		setSvmSentiment(response.svmSentiment);
-		setSentiment(response.sentiment);
+		try {
+			setIsLoading(true);
+			const response = await dispatch(reviewActions.getSentiment(text));
+			setIsLoading(false);
+			setLogiSentiment(response.logiSentiment);
+			setRfSentiment(response.rfSentiment);
+			setSvmSentiment(response.svmSentiment);
+			setSentiment(response.sentiment);
+		} catch (error) {
+			console.log(error);
+			alert("Something went wrong");
+		}
 	}, [text, dispatch]);
 	const handleChange = (event) => {
 		setText(event.target.value);

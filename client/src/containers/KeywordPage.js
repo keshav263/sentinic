@@ -68,7 +68,7 @@ export default function KeywordPage(props) {
 			<NavBar />
 			<Container>
 				<GreyTitle>
-					Keyword: <span style={{ color: "#000" }}>{keyword.current}</span>
+					Product: <span style={{ color: "#000" }}>{keyword.current}</span>
 				</GreyTitle>
 				<StyledTabs
 					style={{ justifyContent: "center" }}
@@ -84,10 +84,12 @@ export default function KeywordPage(props) {
 				</StyledTabs>
 				<Row>
 					<Column>
-						<SubTitle>Keyword Image</SubTitle>
+						<SubTitle>Product Image</SubTitle>
 						<Row>
 							<AverageStats
 								difference={positiveCount - negativeCount}
+								negativeCount={negativeCount}
+								positiveCount={positiveCount}
 								revCount={positiveCount + negativeCount}
 							/>
 							<LineChart lineData={lineData} />

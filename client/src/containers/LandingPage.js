@@ -48,17 +48,19 @@ export default function LandingPage() {
 		<>
 			<NavBar />
 			<Container>
-				<Title>Keywords</Title>
+				<Title>Products</Title>
 				<KeywordsContainer>
 					{getAllKeywords()}
 					<AddKeyword setKeywords={setKeywords} />
 				</KeywordsContainer>
-				<Title>Average Keyword Image</Title>
+				<Title>Average Product Image</Title>
 				{keywords.length > 0 ? (
 					<Row>
 						<AverageStats
 							difference={positiveCount - negativeCount}
 							revCount={positiveCount + negativeCount}
+							positiveCount={positiveCount}
+							negativeCount={negativeCount}
 						/>
 						<Chart
 							width={"500px"}

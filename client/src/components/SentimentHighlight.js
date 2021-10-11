@@ -10,11 +10,11 @@ export default function SentimentHighlight({ review, difference, date }) {
 				style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
 			>
 				{difference === "+1" ? <PositiveIcon /> : <RedIcon />}
-				<Difference
+				{/* <Difference
 					style={{ color: difference === "+1" ? "#19b682" : "#f33534" }}
 				>
 					{difference}
-				</Difference>
+				</Difference> */}
 			</div>
 			<div>
 				<Sentiment>Sentiment {difference === "+1" ? "gain" : "loss"}</Sentiment>
@@ -25,10 +25,10 @@ export default function SentimentHighlight({ review, difference, date }) {
 	);
 }
 
-const Difference = styled.p`
-	font-weight: 600;
-	padding-left: 5px;
-`;
+// const Difference = styled.p`
+// 	font-weight: 600;
+// 	padding-left: 5px;
+// `;
 
 const Container = styled.div`
 	background-color: #f7f7fa;

@@ -3,10 +3,18 @@ import styled from "styled-components";
 import PositiveIcon from "./PositiveIcon";
 import RedIcon from "./RedIcon";
 
-export default function AverageStats({ revCount, difference, sentiment }) {
+export default function AverageStats({
+	revCount,
+	difference,
+	sentiment,
+	negativeCount,
+	positiveCount,
+}) {
+	console.log(positiveCount);
+	console.log(negativeCount);
 	return (
 		<StatContainer>
-			<ReviewCount>{revCount}</ReviewCount>
+			<ReviewCount>{revCount.toFixed()}</ReviewCount>
 			<div
 				style={{
 					display: "flex",
@@ -16,9 +24,15 @@ export default function AverageStats({ revCount, difference, sentiment }) {
 				}}
 			>
 				{difference > 0 ? <PositiveIcon /> : <RedIcon />}
-				<Difference>{difference.toFixed(2)}</Difference>
+				<Difference difference={difference}>
+					{(
+						((positiveCount - negativeCount).toFixed() / revCount) *
+						100
+					).toFixed()}{" "}
+					%
+				</Difference>
 			</div>
-			<Sentiment difference={difference}>{sentiment}</Sentiment>
+			{/* <Sentiment difference={difference}>{sentiment}</Sentiment> */}
 		</StatContainer>
 	);
 }
@@ -47,9 +61,9 @@ const Difference = styled.p`
 	padding-left: 4px;
 `;
 
-const Sentiment = styled.p`
-	margin: 0;
-	color: #888;
-	font-size: 0.8rem;
-	font-weight: bold;
-`;
+// const Sentiment = styled.p`
+// 	margin: 0;
+// 	color: #888;
+// 	font-size: 0.8rem;
+// 	font-weight: bold;
+// `;

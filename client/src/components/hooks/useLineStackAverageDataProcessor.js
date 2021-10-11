@@ -7,7 +7,7 @@ export default function lineStackProcessor() {
 		// eslint-disable-next-line array-callback-return
 		data.map((d) => {
 			// eslint-disable-next-line array-callback-return
-			d.data.map((key) => {
+			d?.data.map((key) => {
 				let date = key.date;
 				const month = new Date(date).getMonth();
 				let bool = dates.findIndex((da) => da.month === MonthRaw[month]);
