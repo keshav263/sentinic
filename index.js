@@ -85,7 +85,7 @@ app.post("/get-sentiment", async (req, res) => {
 	}
 	try {
 		const sentiment = await spawn("python", ["sentiment.py", text]);
-		let sent = sentiment.toString();
+		let sent = JSON.parse(sentiment.toString());
 		console.log(sent);
 		let st = 0;
 		s = sent[0] + sent[1] + sent[2];
