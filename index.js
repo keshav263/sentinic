@@ -85,13 +85,13 @@ app.post("/get-sentiment", async (req, res) => {
 	}
 	try {
 		const sentiment = await spawn("python", ["sentiment.py", text]);
-		let sent = JSON.parse(sentiment.toString());
+		let sent = sentiment.toString();
 		console.log(sent);
 		let st = 0;
-		s = sent[0] + sent[1] + sent[2];
-		if (s <= 1) st = 0;
-		else st = 1;
-		console.log(st);
+		// s = sent[0] + sent[1] + sent[2];
+		// if (s <= 1) st = 0;
+		// else st = 1;
+		// console.log(st);
 		return res.status(200).send({
 			status: "Analysed successfully",
 			logiSentiment: sent[0],
