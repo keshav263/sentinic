@@ -101,6 +101,7 @@ app.post("/get-sentiment", async (req, res) => {
 		});
 	} catch (error) {
 		console.log(error);
+		console.log(error.message);
 		res.status(400).send({ Error: "Something went wrong" });
 	}
 });

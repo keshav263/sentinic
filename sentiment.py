@@ -4,7 +4,8 @@ import pandas as pd;
 import sys
 warnings.filterwarnings("ignore")
 text =sys.argv[1];
-pred=[0,0,0]   
+pred=[0,0,0]
+print("HELLo")   
 try:
     with open("logistic_regression.p",'rb') as pickled:
         try:
