@@ -18,7 +18,7 @@ app.use((req, res, next) => {
 });
 app.use(morgan("dev"));
 
-app.post("/scrape-reviews", (req, res) => {
+app.post("/scrape-reviews", async (req, res) => {
 	const url = req.body.url;
 	if (!url) {
 		return res.status(400).send({ message: "URL Required" });
