@@ -1,2 +1,2 @@
 // export const url = "https://a5b3-106-202-183-216.ngrok.io";
-export const url = "https://localhost:5000";
+export const url = "https://sentinic-1.herokuapp.com";
