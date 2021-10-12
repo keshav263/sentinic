@@ -4,7 +4,6 @@ const chalk = require("chalk");
 // const cors = require("cors");
 const app = express();
 const http = require("http").Server(app);
-// const { spawn } = require("child_process");
 const spawn = require("await-spawn");
 var csv = require("csvtojson");
 app.use(express.urlencoded({ extended: true }));
@@ -25,49 +24,24 @@ app.post("/scrape-reviews", (req, res) => {
 		return res.status(400).send({ message: "URL Required" });
 	}
 	try {
-		const main = spawn("python", ["scraper.py", url]);
-		main.stdout.on("data", function (data) {
-			const logistic = spawn("python", ["logistic.py"]);
-			logistic.stdout.on("data", function (data) {
-				console.log("Pipe data from python script ...");
-				let lr = JSON.parse(data.toString());
-				const randomForest = spawn("python", ["rf.py"]);
-				randomForest.stdout.on("data", function (data) {
-					let rf = JSON.parse(data.toString());
-					const supportVector = spawn("python", ["svm.py"]);
-					supportVector.stdout.on("data", function (data) {
-						let svm = JSON.parse(data.toString());
-						console.log(lr);
-						console.log(rf);
-						console.log(svm);
-						csv()
-							.fromFile("amazon_review.csv")
-							.then(function (obj) {
-								res.status(200).send({
-									status: "Analysed successfully",
-									data: obj,
-									positiveCount: (lr[1] + rf[1] + svm[1]) / 3,
-									negativeCount: (lr[0] + rf[0] + svm[0]) / 3,
-								});
-							});
-					});
+		const main = await spawn("python", ["scraper.py", url]);
+
+		const logistic = await spawn("python", ["logistic.py"]);
+		let lr = JSON.parse(logistic.toString());
+		const randomForest = await spawn("python", ["rf.py"]);
+		let rf = JSON.parse(randomForest.toString());
+		const supportVector = await spawn("python", ["svm.py"]);
+		let svm = JSON.parse(supportVector.toString());
+		csv()
+			.fromFile("amazon_review.csv")
+			.then(function (obj) {
+				res.status(200).send({
+					status: "Analysed successfully",
+					data: obj,
+					positiveCount: (lr[1] + rf[1] + svm[1]) / 3,
+					negativeCount: (lr[0] + rf[0] + svm[0]) / 3,
 				});
 			});
-			logistic.on("close", (code) => {
-				console.log(`child process close all stdio with code ${code}`);
-				if (code === 0) {
-					console.log(chalk.redBright(`Code 0`));
-				}
-				if (code === 1) {
-					return res
-						.status(400)
-						.send({ success: false, message: "URL couldn't be scraped" });
-				}
-			});
-		});
-		// main.on("close", (code) => {
-		//   console.log(chalk.redBright("Code 0 on Scraper"));
-		// });
 	} catch (error) {
 		console.log(error);
 		res.status(400).send({ Error: "Something went wrong" });
