@@ -1,6 +1,5 @@
 import pickle
 import warnings
-import pandas as pd;
 from pathlib import Path
 import sys
 warnings.filterwarnings("ignore")
@@ -10,8 +9,10 @@ print("HELLo")
 
 try:
     import pickle
+    from pathlib import Path
+    import warnings
 except:
-    print("Pickle modules not found")    
+    print("modules not found")    
 
 if Path("logistic_regression.p").exists():   
     with open("logistic_regression.p",'rb') as pickled:
@@ -23,7 +24,7 @@ if Path("logistic_regression.p").exists():
             prediction=model.predict(vector)[0]
             pred[0]=prediction
         except:
-            print("Oops!", sys.exc_info()[0], "occurred.")            
+            print("Oops!", sys.exc_info(), "occurred.")            
 if Path("random_forest.p").exists():
     try:
         with open("random_forest.p",'rb') as pickled:
@@ -34,7 +35,7 @@ if Path("random_forest.p").exists():
             prediction=model.predict(vector)[0]
             pred[1]=prediction
     except:
-        print("Oops!", sys.exc_info()[0], "occurred.")            
+        print("Oops!", sys.exc_info(), "occurred.")            
 if Path("support_vector_machine.p").exists():
     try:
         with open("support_vector_machine.p",'rb') as pickled:
@@ -45,6 +46,6 @@ if Path("support_vector_machine.p").exists():
             prediction=model.predict(vector)[0]
             pred[2]=prediction
     except:
-        print("Oops!", sys.exc_info()[0], "occurred.")                
+        print("Oops!", sys.exc_info(), "occurred.")                
 
 print(pred)    
