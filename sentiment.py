@@ -7,6 +7,12 @@ warnings.filterwarnings("ignore")
 text =sys.argv[1];
 pred=[0,0,0]
 print("HELLo")
+
+try:
+    import pickle
+except:
+    print("Pickle modules not found")    
+
 if Path("logistic_regression.p").exists():   
     with open("logistic_regression.p",'rb') as pickled:
         try:
