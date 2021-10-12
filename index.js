@@ -25,7 +25,7 @@ app.post("/scrape-reviews", async (req, res) => {
 	}
 	try {
 		const main = await spawn("python", ["scraper.py", url]);
-
+		console.log(main);
 		const logistic = await spawn("python", ["logistic.py"]);
 		let lr = JSON.parse(logistic.toString());
 		const randomForest = await spawn("python", ["rf.py"]);
