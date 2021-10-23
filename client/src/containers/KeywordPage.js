@@ -18,6 +18,7 @@ export default function KeywordPage(props) {
 			else return false;
 		})
 	);
+	const isAuth = useSelector((state) => state.Auth.isAuth);
 	const [stackData, setStackData] = useState([]);
 	const keyword = useRef(props.location.state);
 
@@ -32,6 +33,12 @@ export default function KeywordPage(props) {
 	const handleChange = (event, newValue) => {
 		setAlgo(newValue);
 	};
+
+	useEffect(() => {
+		if (!isAuth) {
+			props.history.push("/login");
+		}
+	}, [isAuth, props]);
 
 	useEffect(() => {
 		const highlights = getHighlight(data, algo);

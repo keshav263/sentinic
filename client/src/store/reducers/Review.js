@@ -18,6 +18,7 @@ export default function ReviewReducer(state = initialState, action) {
 				keywords: key,
 			};
 		}
+
 		default: {
 			return state;
 		}

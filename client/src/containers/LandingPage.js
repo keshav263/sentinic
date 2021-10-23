@@ -10,8 +10,10 @@ import { CircularProgress } from "@mui/material";
 
 import useLineStackAverageDataProcessor from "../components/hooks/useLineStackAverageDataProcessor";
 
-export default function LandingPage() {
+export default function LandingPage(props) {
 	const key = useSelector((state) => state.Review.keywords);
+	const isAuth = useSelector((state) => state.Auth.isAuth);
+
 	console.log(key);
 	const [keywords, setKeywords] = useState(key);
 	const [stackData, setStackData] = useState([]);
@@ -33,6 +35,12 @@ export default function LandingPage() {
 			);
 		});
 	};
+
+	useEffect(() => {
+		if (!isAuth) {
+			props.history.push("/login");
+		}
+	}, [isAuth, props]);
 
 	useEffect(() => {
 		const { positive, negative, stack, lines } = getLineStackProcessedData(key);

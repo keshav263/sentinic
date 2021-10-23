@@ -2,8 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import Pic from "../assets/stat.png";
 import { useHistory } from "react-router";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { IconButton, Tooltip } from "@mui/material";
+import * as authActions from "../store/actions/Auth";
+import { useDispatch } from "react-redux";
 export default function NavBar() {
 	const history = useHistory();
+	const dispatch = useDispatch();
 	return (
 		<Container>
 			<div
@@ -20,9 +25,24 @@ export default function NavBar() {
 				<Logo>sentinic</Logo>
 			</div>
 			<Text onClick={() => history.push("/sentiment")}>Try it out!</Text>
+			<IconButton
+				onClick={() => {
+					dispatch(authActions.logOut());
+				}}
+			>
+				<Tooltip title="Log out">
+					<StyledLogoutIcon />
+				</Tooltip>
+			</IconButton>
 		</Container>
 	);
 }
+
+const StyledLogoutIcon = styled(LogoutIcon)`
+	color: #fff;
+	height: 1rem;
+	margin-right: 2rem;
+`;
 
 const Container = styled.div`
 	background-color: #101937;

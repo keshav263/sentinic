@@ -3,13 +3,14 @@ import styled from "styled-components";
 import NavBar from "../components/NavBar";
 import * as reviewActions from "../store/actions/Review";
 import { TextField } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
 
-export default function SentimentPage() {
+export default function SentimentPage(props) {
 	const [text, setText] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 	const [logiSentiment, setLogiSentiment] = useState(null);
+	const isAuth = useSelector((state) => state.Auth.isAuth);
 	const [rfSentiment, setRfSentiment] = useState(null);
 	const [svmSentiment, setSvmSentiment] = useState(null);
 	const [sentiment, setSentiment] = useState(null);
@@ -46,6 +47,12 @@ export default function SentimentPage() {
 			document.removeEventListener("keydown", listener);
 		};
 	}, [onSubmit]);
+
+	useEffect(() => {
+		if (!isAuth) {
+			props.history.push("/login");
+		}
+	}, [isAuth, props]);
 	return (
 		<>
 			<NavBar />

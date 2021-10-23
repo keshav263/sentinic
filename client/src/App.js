@@ -5,10 +5,12 @@ import ReduxThunk from "redux-thunk";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import ReviewReducer from "./store/reducers/Review";
+import AuthReducer from "./store/reducers/Auth";
 import storage from "redux-persist/lib/storage";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore, persistReducer } from "redux-persist";
 import { CircularProgress } from "@mui/material";
+import "./firebase/firebase";
 
 function App() {
 	const persistConfig = {
@@ -17,6 +19,7 @@ function App() {
 	};
 	const rootReducer = combineReducers({
 		Review: ReviewReducer,
+		Auth: AuthReducer,
 	});
 	const persistedReducer = persistReducer(persistConfig, rootReducer);
 	const store = createStore(persistedReducer, applyMiddleware(ReduxThunk));

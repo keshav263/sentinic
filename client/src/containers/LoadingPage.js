@@ -5,6 +5,7 @@ import { motion, useAnimation } from "framer-motion";
 import Box from "@mui/material/Box";
 import { makeStyles } from "@mui/styles";
 import { Button } from "@mui/material";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles(({ theme }) => ({
 	divider: {
@@ -20,6 +21,7 @@ const useStyles = makeStyles(({ theme }) => ({
 export default function LoadingPage(props) {
 	const [progress, setProgress] = useState(0);
 	const controls = useAnimation();
+	const isAuth = useSelector((state) => state.Auth.isAuth);
 	const classes = useStyles();
 	useEffect(() => {
 		const timer = setInterval(() => {
@@ -65,11 +67,14 @@ export default function LoadingPage(props) {
 				component={motion.div}
 				animate={controls}
 				initial={{ opacity: 0 }}
-				onClick={() => props.history.push("/home")}
+				onClick={() => {
+					if (isAuth) props.history.push("/home");
+					else props.history.push("/login");
+				}}
 				variant="contained"
 				style={{ backgroundColor: "rgba(2, 116, 103,0.8)" }}
 			>
-				Go to site
+				{isAuth ? "Go to dashboard" : "Sign in"}
 			</StyledButton>
 		</Container>
 	);
