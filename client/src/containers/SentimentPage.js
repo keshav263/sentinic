@@ -168,8 +168,10 @@ const EmojisContainer = styled.div`
 `;
 
 const AnimationContainer = styled(motion.div)`
+	margin: 0 auto;
 	margin-top: 20px;
 	height: 128px;
+	width: 128px;
 `;
 
 const Image1 = styled(motion.img)``;
