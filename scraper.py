@@ -109,5 +109,4 @@ for i,j in enumerate(df['review']):
  
 # Save the output to csv file
 df.to_csv('amazon_review.csv')
-
 print(df.head())

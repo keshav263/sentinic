@@ -1,23 +1,46 @@
+require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const chalk = require("chalk");
-// const cors = require("cors");
+const db = require("./config/db");
+const redis = require("redis");
+const client = redis.createClient();
 const app = express();
 const http = require("http").Server(app);
-// const { spawn } = require("child_process");
 const spawn = require("await-spawn");
 var csv = require("csvtojson");
+const { scraperQueue } = require("./queues/scraperQueue");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ extended: false }));
+
 app.use((req, res, next) => {
-	res.header("Access-Control-Allow-Origin", "*");
-	res.header(
-		"Access-Control-Allow-Headers",
-		"Origin, X-Requested-With, Content-Type, Accept"
-	);
-	next();
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
 });
+db();
 app.use(morgan("dev"));
+
+app.post("/scrape-reviews", (req, res) => {
+  try {
+    const { url, name } = req.body;
+    if (!url || !name) {
+      return res.status(400).send({ message: "URL and Name Required" });
+    }
+    scraperQueue.add({ name, url });
+    res.status(200).send({ status: "Processing" });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+scraperQueue.on("completed", function (job, result) {
+  console.log("JOB COMPLETED");
+  console.log(job.returnvalue);
+});
 
 // app.post("/scrape-reviews", (req, res) => {
 // 	const url = req.body.url;
@@ -75,39 +98,43 @@ app.use(morgan("dev"));
 // });
 
 app.get("/", (req, res) => {
-	res.send({ message: "Welcome to sentinic service" });
+  res.send({ message: "Welcome to sentinic service" });
 });
 
 app.post("/get-sentiment", async (req, res) => {
-	const { text } = req.body;
-	if (!text) {
-		return res.status(400).send({ message: "URL Required" });
-	}
-	try {
-		const sentiment = await spawn("python", ["sentiment.py", text]);
-		let sent = sentiment.toString();
-		console.log(sent);
-		let st = 0;
-		// s = sent[0] + sent[1] + sent[2];
-		// if (s <= 1) st = 0;
-		// else st = 1;
-		// console.log(st);
-		return res.status(200).send({
-			status: "Analysed successfully",
-			logiSentiment: sent[0],
-			rfSentiment: sent[1],
-			svmSentiment: sent[2],
-			sentiment: st,
-		});
-	} catch (error) {
-		console.log(error);
-		console.log(error.message);
-		res.status(400).send({ Error: "Something went wrong" });
-	}
+  const { text } = req.body;
+  if (!text) {
+    return res.status(400).send({ message: "URL Required" });
+  }
+  try {
+    const sentiment = await spawn("python", ["sentiment.py", text]);
+    let sent = sentiment.toString();
+    console.log(sent);
+    let st = 0;
+    // s = sent[0] + sent[1] + sent[2];
+    // if (s <= 1) st = 0;
+    // else st = 1;
+    // console.log(st);
+    return res.status(200).send({
+      status: "Analysed successfully",
+      logiSentiment: sent[0],
+      rfSentiment: sent[1],
+      svmSentiment: sent[2],
+      sentiment: st,
+    });
+  } catch (error) {
+    console.log(error);
+    console.log(error.message);
+    res.status(400).send({ Error: "Something went wrong" });
+  }
 });
 
 const PORT = process.env.PORT || 5000;
 
 http.listen(PORT, () => {
-	console.log(chalk.blueBright(`Listening on port ${PORT}`));
+  console.log(chalk.blueBright(`Listening on port ${PORT}`));
+});
+
+client.on("connect", function () {
+  console.log(chalk.cyanBright("Redis Connected"));
 });
