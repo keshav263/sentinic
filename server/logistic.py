@@ -12,7 +12,7 @@ with open("logistic_regression.p",'rb') as pickled:
     pred=[]
     count=[0,0]
     for i in df.index:
-        vector=vectorizer.transform([df['review'][i]])
+        vector=vectorizer.transform([df['review_stopwords'][i]])
         prediction=model.predict(vector)[0]
         pred.append(prediction)
         count[prediction]+=1

@@ -4,6 +4,11 @@ from bs4 import BeautifulSoup
 import datetime
 import pandas as pd
 import sys
+import re
+import string
+import nltk
+import spacy
+from nltk.corpus import stopwords
 #list declaration
 cus_res1=[]
 cus_res2=[]
@@ -90,7 +95,7 @@ def html_code(url):
 #url formatting
 ticker="&pageNumber=" 
 url = sys.argv[1];
-# url="https://www.amazon.in/Fitbit-FB507BKBK-Smartwatch-Tracking-Included/product-reviews/B07TWFVDWT/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+# url="https://www.amazon.in/Mediabridge-FLEX-Ethernet-Category-Certified/product-reviews/B004LTE5JI/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
 url += ticker
 
 for i in range(1,51):
@@ -107,7 +112,30 @@ for i,j in enumerate(df['review']):
   if j=='':
     df['review'][i]='xxx'
  
+df["text_lower"] = df["review"].str.lower() 
+
+PUNCT_TO_REMOVE = string.punctuation
+def remove_punctuation(text):
+    """custom function to remove the punctuation"""
+    return text.translate(str.maketrans('', '', PUNCT_TO_REMOVE))
+
+df["text_wo_punct"] = df["text_lower"].apply(lambda text: remove_punctuation(text))
+
+nltk.download('stopwords')
+", ".join(stopwords.words('english'))
+
+STOPWORDS = set(stopwords.words('english'))
+def remove_stopwords(text):
+    """custom function to remove the stopwords"""
+    return " ".join([word for word in str(text).split() if word not in STOPWORDS])
+
+df["review_stopwords"] = df["text_wo_punct"].apply(lambda text: remove_stopwords(text.lower()))
+for i,j in enumerate(df['review_stopwords']):
+  if j=='':
+    df['review_stopwords'][i]='xxx'
+df.head()
 # Save the output to csv file
 df.to_csv('amazon_review.csv')
+
 
 print(df.head())
