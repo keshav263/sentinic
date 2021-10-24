@@ -6,7 +6,7 @@ const scraperQueue = new Queue("Web Scraping");
 
 scraperQueue.process(async (job, done) => {
   try {
-    const { name, url } = job.data;
+    const { name, url, _id } = job.data;
     const scraped = await spawn("python", ["scraper.py", url]);
     const logistic = await spawn("python", ["logistic.py"]);
     const randomForest = await spawn("python", ["rf.py"]);
@@ -21,7 +21,14 @@ scraperQueue.process(async (job, done) => {
     console.log(content);
     const review = new Review({ name, url, content });
     await review.save();
-    done(null, { status: "Reviews Scraped", lr, rf, svm, _id: review._id });
+    done(null, {
+      status: "Reviews Scraped",
+      lr,
+      rf,
+      svm,
+      _id: review._id,
+      socketId: _id,
+    });
     // throw new Error("Something went wrong");
   } catch (error) {
     console.log(error);
