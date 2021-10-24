@@ -5,16 +5,16 @@ import Keywords from "../components/Keywords";
 import Chart from "react-google-charts";
 import AverageStats from "../components/AverageStats";
 import NavBar from "../components/NavBar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { CircularProgress } from "@mui/material";
-
+import socket from "../socketIo";
+import * as reviewActions from "../store/actions/Review";
 import useLineStackAverageDataProcessor from "../components/hooks/useLineStackAverageDataProcessor";
 
 export default function LandingPage(props) {
 	const key = useSelector((state) => state.Review.keywords);
 	const isAuth = useSelector((state) => state.Auth.isAuth);
-
-	console.log(key);
+	const dispatch = useDispatch();
 	const [keywords, setKeywords] = useState(key);
 	const [stackData, setStackData] = useState([]);
 	const [lineData, setLineData] = useState([]);
@@ -51,6 +51,25 @@ export default function LandingPage(props) {
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [key]);
+
+	useEffect(() => {
+		socket.on("connect", (socket) => {
+			console.log("Socket Connected");
+		});
+	}, []);
+
+	useEffect(() => {
+		socket.on("scraped_data", (socket) => {
+			dispatch(
+				reviewActions.getReviews(
+					socket.data,
+					socket.keyword,
+					socket.positiveCount,
+					socket.negativeCount
+				)
+			);
+		});
+	}, [dispatch]);
 
 	return (
 		<>

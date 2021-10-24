@@ -10,7 +10,7 @@ import {
 import { makeStyles } from "@mui/styles";
 
 import * as reviewActions from "../store/actions/Review";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 const useStyles = makeStyles((theme) => ({
 	margin: {
 		"& .MuiOutlinedInput-input": {
@@ -45,7 +45,7 @@ export default function AddKeyword({ setKeywords }) {
 			await dispatch(
 				reviewActions.getReviewsForKeyword(keyword.url, keyword.title)
 			);
-			setKeywords((prevState) => prevState.concat(keyword));
+			// setKeywords((prevState) => prevState.concat(keyword));
 			setIsLoading(false);
 			setOpen(false);
 		} catch (error) {
@@ -244,5 +244,17 @@ const keywords = [
 	{
 		title: "Headphones",
 		url: "https://www.amazon.in/Bassbuds-Duo-Headphones-Water-Resistant-Cancelling/product-reviews/B09DD9SX9Z/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews",
+	},
+	{
+		title: "Mi LED TV",
+		url: "https://www.amazon.in/Mi-inches-Ready-Android-Black/product-reviews/B084872DQY/ref=cm_cr_arp_d_viewopt_sr?ie=UTF8&reviewerType=all_reviews&filterByStar=positive",
+	},
+	{
+		title: "LG LED TV",
+		url: "https://www.amazon.in/LG-inches-Ready-Smart-32LM563BPTC/product-reviews/B08DPLCM6T/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews",
+	},
+	{
+		title: "Samsung LED TV",
+		url: "https://www.amazon.in/Samsung-Inches-Wondertainment-UA32T4340AKXXL-Glossy/product-reviews/B086WZSK4F/ref=cm_cr_arp_d_viewopt_sr?ie=UTF8&reviewerType=all_reviews&filterByStar=positive",
 	},
 ];

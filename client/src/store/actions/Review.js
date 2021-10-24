@@ -1,9 +1,25 @@
 import { url } from "../../constants/url";
 export const GET_SENTIMENT = "GET_SENTIMENT";
 
+export const getReviews = (data, keyword, positiveCount, negativeCount) => {
+	return async (dispatch) => {
+		dispatch({
+			type: GET_SENTIMENT,
+			payload: {
+				data: data,
+				keyword,
+				positiveCount,
+				negativeCount,
+			},
+		});
+	};
+};
+
 export const getReviewsForKeyword = (amazonUrl, keyword) => {
 	return async (dispatch) => {
 		try {
+			const _id = await localStorage.getItem("_id");
+			console.log(amazonUrl, keyword, _id);
 			const response = await fetch(`${url}/scrape-reviews`, {
 				method: "POST",
 				headers: {
@@ -11,19 +27,12 @@ export const getReviewsForKeyword = (amazonUrl, keyword) => {
 				},
 				body: JSON.stringify({
 					url: amazonUrl,
+					name: keyword,
+					_id,
 				}),
 			});
 			const responseJson = await response.json();
 			console.log(responseJson);
-			dispatch({
-				type: GET_SENTIMENT,
-				payload: {
-					data: responseJson.data,
-					keyword,
-					positiveCount: responseJson.positiveCount,
-					negativeCount: responseJson.negativeCount,
-				},
-			});
 		} catch (error) {
 			console.log(error);
 			throw new Error();

@@ -15,6 +15,7 @@ export default function AuthPage(props) {
 			.then(async (result) => {
 				const user = result.user;
 				console.log(user);
+				await localStorage.setItem("_id", user.uid);
 				await dispatch(
 					authActions.signIn(user.uid, user.displayName, user.email)
 				);
