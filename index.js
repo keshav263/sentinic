@@ -3,11 +3,17 @@ const express = require("express");
 const morgan = require("morgan");
 const chalk = require("chalk");
 const db = require("./config/db");
-const redis = require("redis");
-const client = redis.createClient();
+let redis;
+if (process.env.REDISTOGO_URL) {
+  var rtg = require("url").parse(process.env.REDISTOGO_URL);
+  redis = require("redis").createClient(rtg.port, rtg.hostname);
+  redis.auth(rtg.auth.split(":")[1]);
+} else {
+  redis = require("redis").createClient();
+}
+
 const app = express();
 const http = require("http").Server(app);
-
 const spawn = require("await-spawn");
 const cors = require("cors");
 var csv = require("csvtojson");
@@ -117,6 +123,6 @@ http.listen(PORT, () => {
   console.log(chalk.blueBright(`Listening on port ${PORT}`));
 });
 
-client.on("connect", function () {
+redis.on("connect", function () {
   console.log(chalk.cyanBright("Redis Connected"));
 });
