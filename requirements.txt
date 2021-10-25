@@ -4,3 +4,5 @@ bs4
 datetime
 pickle-mixin
 sklearn
+nltk
+spacy
