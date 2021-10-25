@@ -20,7 +20,7 @@ var csv = require("csvtojson");
 const { scraperQueue } = require("./queues/scraperQueue");
 const { Review } = require("./models/Review");
 
-const io = require("socket.io")(http);
+const io = require("socket.io").listen(http);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ extended: false }));
