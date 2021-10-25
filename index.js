@@ -20,7 +20,12 @@ var csv = require("csvtojson");
 const { scraperQueue } = require("./queues/scraperQueue");
 const { Review } = require("./models/Review");
 
-const io = require("socket.io").listen(http);
+const io = require("socket.io")(http, {
+  cors: {
+    origin: "https://prod.d32hu1nn577xzj.amplifyapp.com",
+    methods: ["GET", "POST"],
+  },
+});
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ extended: false }));
