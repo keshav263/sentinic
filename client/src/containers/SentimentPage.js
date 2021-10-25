@@ -80,6 +80,14 @@ export default function SentimentPage(props) {
 					</AnimationContainer>
 				)}
 				<StyledTextField
+					style={{
+						fontSize: "4rem",
+						lineHeight: "2rem",
+						width: "50vw",
+						color: "#588878",
+						fontWeight: "lighter",
+						marginTop: "40%",
+					}}
 					variant="standard"
 					value={text}
 					onChange={handleChange}
@@ -196,6 +204,12 @@ const StyledTextField = styled(TextField)`
 		font-weight: lighter;
 		margin-top: 40%;
 	}
+	font-size: 4rem;
+	line-height: 2rem;
+	width: 50vw;
+	color: #588878;
+	font-weight: lighter;
+	margin-top: 40%;
 	& .css-1480iag-MuiInputBase-root-MuiInput-root:before {
 		border-bottom: 1px solid #94e6ca;
 	}
@@ -211,4 +225,5 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-content: center;
 `;
