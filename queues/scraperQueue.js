@@ -2,7 +2,8 @@ const Queue = require("bull");
 const spawn = require("await-spawn");
 const { Review } = require("../models/Review");
 var csv = require("csvtojson");
-const scraperQueue = new Queue("Web Scraping");
+let REDIS_URL = process.env.REDIS_URL || "redis://127.0.0.1:6379";
+const scraperQueue = new Queue("Web Scraping", REDIS_URL);
 
 scraperQueue.process(async (job, done) => {
   try {

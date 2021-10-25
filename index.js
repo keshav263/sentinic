@@ -14,12 +14,7 @@ var csv = require("csvtojson");
 const { scraperQueue } = require("./queues/scraperQueue");
 const { Review } = require("./models/Review");
 
-const io = require("socket.io")(http, {
-  cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"],
-  },
-});
+const io = require("socket.io")(http);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ extended: false }));
