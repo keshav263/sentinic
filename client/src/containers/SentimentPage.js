@@ -86,7 +86,6 @@ export default function SentimentPage(props) {
 						width: "50vw",
 						color: "#588878",
 						fontWeight: "lighter",
-						marginTop: "40%",
 					}}
 					variant="standard"
 					value={text}
@@ -196,7 +195,7 @@ const Image3 = styled(Image1)``;
 const Image2 = styled(Image1)``;
 
 const StyledTextField = styled(TextField)`
-	& .css-1x51dt5-MuiInputBase-input-MuiInput-input {
+	& .css-1wt0ykv {
 		font-size: 4rem;
 		line-height: 2rem;
 		width: 50vw;
@@ -204,16 +203,11 @@ const StyledTextField = styled(TextField)`
 		font-weight: lighter;
 		margin-top: 40%;
 	}
-	font-size: 4rem;
-	line-height: 2rem;
-	width: 50vw;
-	color: #588878;
-	font-weight: lighter;
-	margin-top: 40%;
-	& .css-1480iag-MuiInputBase-root-MuiInput-root:before {
+
+	& .css-1wt0ykv::before {
 		border-bottom: 1px solid #94e6ca;
 	}
-	& .css-1480iag-MuiInputBase-root-MuiInput-root:after {
+	& .css-1wt0ykv::after {
 		border-bottom: 2px solid #89d7bd;
 	}
 `;
