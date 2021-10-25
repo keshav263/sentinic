@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 }));
-export default function AddKeyword({ setKeywords }) {
+export default function AddKeyword({ setKeywords, setOpenSnack }) {
 	const [open, setOpen] = useState(false);
 	const [keyword, setKeyword] = useState({ title: "", url: "" });
 	const [isLoading, setIsLoading] = useState(false);
@@ -48,6 +48,7 @@ export default function AddKeyword({ setKeywords }) {
 			// setKeywords((prevState) => prevState.concat(keyword));
 			setIsLoading(false);
 			setOpen(false);
+			setOpenSnack(true);
 		} catch (error) {
 			console.log(error);
 			setIsLoading(false);

@@ -58,12 +58,14 @@ export default function KeywordPage(props) {
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [algo]);
+	console.log(texts);
 
 	const showHighlights = () => {
 		return texts.map((text, index) => (
 			<SentimentHighlight
 				difference={text.difference}
 				review={text.text}
+				title={text.title}
 				key={index}
 				date={text.date}
 			/>

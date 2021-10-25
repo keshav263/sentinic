@@ -6,6 +6,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { IconButton, Tooltip } from "@mui/material";
 import * as authActions from "../store/actions/Auth";
 import { useDispatch } from "react-redux";
+import socket from "../socketIo";
 export default function NavBar() {
 	const history = useHistory();
 	const dispatch = useDispatch();
@@ -28,6 +29,7 @@ export default function NavBar() {
 			<IconButton
 				onClick={() => {
 					dispatch(authActions.logOut());
+					socket.disconnect();
 				}}
 			>
 				<Tooltip title="Log out">

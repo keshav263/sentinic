@@ -3,7 +3,7 @@ export default function lineStackProcessor() {
 		let dates = [];
 		let positive = 0;
 		let negative = 0;
-		console.log(data);
+		// console.log(data);
 		// eslint-disable-next-line array-callback-return
 		data.map((d) => {
 			// eslint-disable-next-line array-callback-return
@@ -99,8 +99,10 @@ export default function lineStackProcessor() {
 					100,
 			]);
 		});
-		console.log(lines);
-		console.log(arr);
+		// console.log(positive / (data.length * 3));
+		// console.log(negative / (data.length * 3));
+		// console.log(lines);
+		// console.log(arr);
 		return {
 			positive: positive / (data.length * 3),
 			negative: negative / (data.length * 3),

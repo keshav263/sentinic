@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import AddKeyword from "../components/AddKeyword";
 import Keywords from "../components/Keywords";
@@ -6,9 +6,11 @@ import Chart from "react-google-charts";
 import AverageStats from "../components/AverageStats";
 import NavBar from "../components/NavBar";
 import { useDispatch, useSelector } from "react-redux";
-import { CircularProgress } from "@mui/material";
-import socket from "../socketIo";
+import { Button, CircularProgress, IconButton } from "@mui/material";
+import { Snackbar } from "@mui/material";
+import socket, { ConnectMe } from "../socketIo";
 import * as reviewActions from "../store/actions/Review";
+import CloseIcon from "@mui/icons-material/Close";
 import useLineStackAverageDataProcessor from "../components/hooks/useLineStackAverageDataProcessor";
 
 export default function LandingPage(props) {
@@ -18,11 +20,12 @@ export default function LandingPage(props) {
 	const [keywords, setKeywords] = useState(key);
 	const [stackData, setStackData] = useState([]);
 	const [lineData, setLineData] = useState([]);
-
+	const [isLoading, setIsLoading] = useState(false);
 	const [positiveCount, setPositiveCount] = useState(0);
 	const [negativeCount, setNegativeCount] = useState(0);
 	const [getLineStackProcessedData] = useLineStackAverageDataProcessor();
-	console.log(keywords);
+	const [openSnack, setOpenSnack] = useState(false);
+	// console.log(keywords);
 	const getAllKeywords = () => {
 		return key?.map((key, index) => {
 			return (
@@ -43,14 +46,22 @@ export default function LandingPage(props) {
 	}, [isAuth, props]);
 
 	useEffect(() => {
+		ConnectMe();
+	}, []);
+
+	const getStats = useCallback(() => {
 		const { positive, negative, stack, lines } = getLineStackProcessedData(key);
 		setStackData(stack);
 		setLineData(lines);
 		setPositiveCount(positive);
 		setNegativeCount(negative);
-
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [key]);
+
+	useEffect(() => {
+		getStats();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [getStats]);
 
 	useEffect(() => {
 		socket.on("connect", (socket) => {
@@ -59,8 +70,9 @@ export default function LandingPage(props) {
 	}, []);
 
 	useEffect(() => {
-		socket.on("scraped_data", (socket) => {
-			dispatch(
+		socket.off("scraped_data").on("scraped_data", async (socket) => {
+			setIsLoading(true);
+			await dispatch(
 				reviewActions.getReviews(
 					socket.data,
 					socket.keyword,
@@ -68,8 +80,24 @@ export default function LandingPage(props) {
 					socket.negativeCount
 				)
 			);
+			setIsLoading(false);
+			// getStats();
 		});
-	}, [dispatch]);
+	}, [dispatch, getStats]);
+
+	if (isLoading)
+		return (
+			<Container
+				style={{
+					display: "flex",
+					alignItems: "center",
+					justifyContent: "center",
+					height: "100vh",
+				}}
+			>
+				<CircularProgress color="primary"></CircularProgress>
+			</Container>
+		);
 
 	return (
 		<>
@@ -78,10 +106,10 @@ export default function LandingPage(props) {
 				<Title>Products</Title>
 				<KeywordsContainer>
 					{getAllKeywords()}
-					<AddKeyword setKeywords={setKeywords} />
+					<AddKeyword setOpenSnack={setOpenSnack} />
 				</KeywordsContainer>
 				<Title>Average Product Image</Title>
-				{keywords.length > 0 ? (
+				{key.length > 0 ? (
 					<Row>
 						<AverageStats
 							difference={positiveCount - negativeCount}
@@ -198,6 +226,12 @@ export default function LandingPage(props) {
 						<p>Add keyword to view average</p>
 					</div>
 				)}
+				<Snackbar
+					open={openSnack}
+					autoHideDuration={6000}
+					onClose={() => setOpenSnack(false)}
+					message="Your product will be added soon"
+				/>
 			</Container>
 		</>
 	);

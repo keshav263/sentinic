@@ -8,12 +8,14 @@ export default function getHighlight() {
 						difference: "-1",
 						text: data[0].data[index].review,
 						date: data[0].data[index].date,
+						title: data[0].data[index].title,
 					});
 				} else {
 					sentiment.push({
 						difference: "+1",
 						text: data[0].data[index].review,
 						date: data[0].data[index].date,
+						title: data[0].data[index].title,
 					});
 				}
 			} else if (algo === "SVM") {
@@ -22,12 +24,14 @@ export default function getHighlight() {
 						difference: "-1",
 						text: data[0].data[index].review,
 						date: data[0].data[index].date,
+						title: data[0].data[index].title,
 					});
 				} else {
 					sentiment.push({
 						difference: "+1",
 						text: data[0].data[index].review,
 						date: data[0].data[index].date,
+						title: data[0].data[index].title,
 					});
 				}
 			} else {
@@ -36,12 +40,14 @@ export default function getHighlight() {
 						difference: "-1",
 						text: data[0].data[index].review,
 						date: data[0].data[index].date,
+						title: data[0].data[index].title,
 					});
 				} else {
 					sentiment.push({
 						difference: "+1",
 						text: data[0].data[index].review,
 						date: data[0].data[index].date,
+						title: data[0].data[index].title,
 					});
 				}
 			}

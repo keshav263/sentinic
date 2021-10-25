@@ -1,34 +1,91 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import PositiveIcon from "./PositiveIcon";
 import RedIcon from "./RedIcon";
-
-export default function SentimentHighlight({ review, difference, date }) {
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+const style = {
+	position: "absolute",
+	top: "50%",
+	left: "50%",
+	transform: "translate(-50%, -50%)",
+	width: 400,
+	bgcolor: "background.paper",
+	border: "2px solid #888",
+	boxShadow: 24,
+	borderRadius: 4,
+	p: 4,
+};
+export default function SentimentHighlight({
+	review,
+	difference,
+	date,
+	title,
+}) {
+	const [open, setOpen] = useState(false);
 	return (
-		<Container>
-			<div
-				style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
-			>
-				{difference === "+1" ? <PositiveIcon /> : <RedIcon />}
-				{/* <Difference
+		<>
+			<Container onClick={() => setOpen(true)}>
+				<div
+					style={{
+						display: "flex",
+						flexDirection: "row",
+						alignItems: "center",
+					}}
+				>
+					{difference === "+1" ? <PositiveIcon /> : <RedIcon />}
+					{/* <Difference
 					style={{ color: difference === "+1" ? "#19b682" : "#f33534" }}
 				>
 					{difference}
 				</Difference> */}
-			</div>
-			<div>
-				<Sentiment>Sentiment {difference === "+1" ? "gain" : "loss"}</Sentiment>
-				<Text>{review}</Text>
-			</div>
-			<DateText>{new Date(date).toLocaleDateString()}</DateText>
-		</Container>
+				</div>
+				<div>
+					<Sentiment>
+						Sentiment {difference === "+1" ? "gain" : "loss"}
+					</Sentiment>
+					<Text>{review}</Text>
+				</div>
+				<DateText>{new Date(date).toLocaleDateString()}</DateText>
+			</Container>
+			<Modal
+				disableEnforceFocus
+				open={open}
+				sx={{ borderRadius: 20 }}
+				onBackdropClick={() => setOpen(false)}
+				onClose={() => setOpen(false)}
+				aria-labelledby="modal-modal-title"
+				aria-describedby="modal-modal-description"
+			>
+				<Box sx={style}>
+					<Typography
+						color="#3355db"
+						id="modal-modal-title"
+						variant="h6"
+						component="h2"
+					>
+						{title}
+					</Typography>
+					<Typography
+						color="#111830"
+						id="modal-modal-description"
+						sx={{
+							mt: 2,
+							maxLines: 10,
+							maxHeight: "20vh",
+							overflow: "hidden",
+							fontWeight: 400,
+						}}
+					>
+						{review}
+					</Typography>
+				</Box>
+			</Modal>
+		</>
 	);
 }
-
-// const Difference = styled.p`
-// 	font-weight: 600;
-// 	padding-left: 5px;
-// `;
 
 const Container = styled.div`
 	background-color: #f7f7fa;
@@ -37,6 +94,7 @@ const Container = styled.div`
 	width: 40vw;
 	padding: 10px;
 	height: 6vh;
+	cursor: pointer;
 	display: flex;
 	justify-content: space-around;
 	align-items: center;

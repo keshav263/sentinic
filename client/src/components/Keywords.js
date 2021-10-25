@@ -43,6 +43,7 @@ export default function Keywords({ title, positiveCount, negativeCount }) {
 const KeywordStat = styled.div`
 	border-radius: 10px;
 	height: 180px;
+	width: 10rem;
 	box-sizing: border-box;
 	padding: 25px 25px;
 	text-align: center;
