@@ -66,8 +66,9 @@ io.on("connection", (socket) => {
     console.log("Socket Disconnected");
   });
   scraperQueue.on("completed", async function (job, result) {
-    console.log(socket.id);
     if (socket._id === job.returnvalue.socketId) {
+      console.log(socket.id);
+      console.log(socket._id === job.returnvalue.socketId);
       const review = await Review.findById({ _id: job.returnvalue._id });
       let lr = JSON.parse(job.returnvalue.lr);
       let rf = JSON.parse(job.returnvalue.rf);
@@ -76,12 +77,9 @@ io.on("connection", (socket) => {
       io.to(socket.id).emit("scraped_data", {
         data: review.content,
         keyword: review.name,
-        positiveCount: (lr[0] + svm[0] + rf[0]) / 3,
-        negativeCount: (lr[1] + rf[1] + svm[1]) / 3,
+        positiveCount: (lr[1] + svm[1] + rf[1]) / 3,
+        negativeCount: (lr[0] + rf[0] + svm[0]) / 3,
       });
-
-      console.log("JOB COMPLETED");
-      console.log(job.returnvalue);
     }
   });
 });

@@ -12,13 +12,13 @@ scraperQueue.process(async (job, done) => {
     const randomForest = await spawn("python", ["rf.py"]);
     const supportVector = await spawn("python", ["svm.py"]);
     let lr = logistic.toString();
-    console.log(lr);
+
     let rf = randomForest.toString();
-    console.log(rf);
+
     let svm = supportVector.toString();
-    console.log(svm);
+
     const content = await csv().fromFile("amazon_review.csv");
-    console.log(content);
+
     const review = new Review({ name, url, content });
     await review.save();
     done(null, {
