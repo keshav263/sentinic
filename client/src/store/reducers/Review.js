@@ -1,4 +1,8 @@
-import { DELETE_KEYOWRD, GET_SENTIMENT } from "../actions/Review";
+import {
+	DELETE_KEYOWRD,
+	GET_SENTIMENT,
+	RENAME_KEYWORD,
+} from "../actions/Review";
 
 const initialState = {
 	keywords: [],
@@ -14,6 +18,17 @@ export default function ReviewReducer(state = initialState, action) {
 				negativeCount: action.payload.negativeCount,
 			});
 
+			return {
+				keywords: key,
+			};
+		}
+		case RENAME_KEYWORD: {
+			const key = state.keywords.map((k) => {
+				if (k.title === action.payload.keyword)
+					k.title = action.payload.newKeyword;
+				return k;
+			});
+			console.log(key);
 			return {
 				keywords: key,
 			};

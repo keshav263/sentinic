@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import AverageStats from "../components/AverageStats";
 import ColumnChart from "../components/Charts/ColumnChart";
@@ -11,6 +11,10 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import useLineStackDataProcessor from "../components/hooks/useLineStackDataProcessor";
 import PieChart from "../components/Charts/PieChart";
+import CreateIcon from "@mui/icons-material/Create";
+import { IconButton, TextField } from "@mui/material";
+import * as reviewActions from "../store/actions/Review";
+import CheckIcon from "@mui/icons-material/Check";
 export default function KeywordPage(props) {
 	const data = useSelector((state) =>
 		state.Review.keywords.filter((key) => {
@@ -18,6 +22,7 @@ export default function KeywordPage(props) {
 			else return false;
 		})
 	);
+	const dispatch = useDispatch();
 	const isAuth = useSelector((state) => state.Auth.isAuth);
 	const [stackData, setStackData] = useState([]);
 	const keyword = useRef(props.location.state);
@@ -29,6 +34,8 @@ export default function KeywordPage(props) {
 	const [getHighlight] = useSentimentHighlight();
 	const [getLineStackProcessedData] = useLineStackDataProcessor();
 	const [algo, setAlgo] = useState("SVM");
+	const [key, setKey] = useState(keyword.current);
+	const [isEditing, setIsEditing] = useState(false);
 
 	const handleChange = (event, newValue) => {
 		setAlgo(newValue);
@@ -76,9 +83,35 @@ export default function KeywordPage(props) {
 		<>
 			<NavBar />
 			<Container>
-				<GreyTitle>
-					Product: <span style={{ color: "#000" }}>{keyword.current}</span>
-				</GreyTitle>
+				<div
+					style={{
+						display: "flex",
+						alignItems: "center",
+						marginTop: "1rem",
+					}}
+				>
+					<GreyTitle>Product:</GreyTitle>
+					<StyledTextField
+						disabled={!isEditing}
+						variant="filled"
+						value={key}
+						onChange={(event) => setKey(event.target.value)}
+					></StyledTextField>
+					{!isEditing ? (
+						<IconButton onClick={() => setIsEditing(true)}>
+							<CreateIcon style={{ fontSize: 28, color: "#6177cc" }} />
+						</IconButton>
+					) : (
+						<IconButton
+							onClick={() => {
+								setIsEditing(false);
+								dispatch(reviewActions.renameKeyword(keyword.current, key));
+							}}
+						>
+							<CheckIcon style={{ fontSize: 28, color: "#6177cc" }} />
+						</IconButton>
+					)}
+				</div>
 				<StyledTabs
 					style={{ justifyContent: "center" }}
 					value={algo}
@@ -143,6 +176,42 @@ export default function KeywordPage(props) {
 	);
 }
 
+const StyledTextField = styled(TextField)`
+	& .css-cio0x1-MuiInputBase-root-MuiFilledInput-root {
+		/* background: #f3f5f7; */
+		border-bottom: 1px black solid;
+		padding: 0;
+		background: #fff;
+		width: 16rem;
+	}
+	& .css-cio0x1-MuiInputBase-root-MuiFilledInput-root.Mui-disabled {
+		-webkit-text-fill-color: #000;
+		opacity: 1;
+		background: #fff;
+		border: 0;
+	}
+	& .css-10botns-MuiInputBase-input-MuiFilledInput-input.Mui-disabled {
+		-webkit-text-fill-color: #000;
+	}
+	& .css-cio0x1-MuiInputBase-root-MuiFilledInput-root:before {
+		border: 0;
+	}
+	& .css-cio0x1-MuiInputBase-root-MuiFilledInput-root:after {
+		border: 0;
+	}
+	&
+		.css-cio0x1-MuiInputBase-root-MuiFilledInput-root:hover:not(.Mui-disabled):before {
+		border: 0;
+	}
+	& .css-cio0x1-muiinputbase-root-muifilledinput-root:after {
+		border: 0;
+	}
+	& .css-10botns-MuiInputBase-input-MuiFilledInput-input {
+		padding: 0;
+		font-size: 2rem;
+	}
+`;
+
 const StyledTabs = styled(Tabs)`
 	& .css-heg063-MuiTabs-flexContainer {
 		justify-content: center;
@@ -168,7 +237,7 @@ const GreyTitle = styled.h3`
 	color: #8f94a3;
 	font-size: 2rem;
 	font-weight: 500;
-	margin-bottom: 0;
+	margin: 0;
 `;
 const SubTitle = styled.p`
 	font-weight: 600;

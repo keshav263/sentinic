@@ -1,6 +1,13 @@
 import { url } from "../../constants/url";
 export const GET_SENTIMENT = "GET_SENTIMENT";
 export const DELETE_KEYOWRD = "DELETE_KEYWORD";
+export const RENAME_KEYWORD = "RENAME_KEYWORD";
+
+export const renameKeyword = (keyword, newKeyword) => {
+	return async (dispatch) => {
+		dispatch({ type: RENAME_KEYWORD, payload: { keyword, newKeyword } });
+	};
+};
 
 export const removeKeyword = (keyword) => {
 	return async (dispatch) => {
