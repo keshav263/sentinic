@@ -1,4 +1,4 @@
-import { GET_SENTIMENT } from "../actions/Review";
+import { DELETE_KEYOWRD, GET_SENTIMENT } from "../actions/Review";
 
 const initialState = {
 	keywords: [],
@@ -18,7 +18,14 @@ export default function ReviewReducer(state = initialState, action) {
 				keywords: key,
 			};
 		}
-
+		case DELETE_KEYOWRD: {
+			const key = state.keywords.filter(
+				(k) => k.title !== action.payload.keyword
+			);
+			return {
+				keywords: key,
+			};
+		}
 		default: {
 			return state;
 		}

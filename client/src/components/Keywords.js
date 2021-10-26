@@ -1,19 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router";
 import RedIcon from "./RedIcon";
 import PositiveIcon from "./PositiveIcon";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { IconButton } from "@mui/material";
+import { useDispatch } from "react-redux";
+import * as reviewActions from "../store/actions/Review";
 
 export default function Keywords({ title, positiveCount, negativeCount }) {
 	const history = useHistory();
+	const dispatch = useDispatch();
+	const [isHovering, setIsHovering] = useState(false);
 	return (
 		<KeywordStat
 			style={{
+				position: "relative",
 				backgroundColor:
 					positiveCount - negativeCount > 0 ? "#ddf4eb" : "#ffe2e3",
 			}}
-			onClick={() => history.push({ pathname: "/keyword", state: title })}
+			onClick={() => {
+				if (isHovering) return;
+				history.push({ pathname: "/keyword", state: title });
+			}}
 		>
+			<IconButton
+				onClick={() => {
+					dispatch(reviewActions.removeKeyword(title));
+				}}
+				onMouseEnter={() => setIsHovering(true)}
+				onMouseLeave={() => setIsHovering(false)}
+				style={{ position: "absolute", right: 0, top: 0, zIndex: 10 }}
+			>
+				<DeleteIcon style={{ color: "#3b5fe0", opacity: 0.8, fontSize: 20 }} />
+			</IconButton>
 			<Keyword>{title}</Keyword>
 			<ReviewCount>{positiveCount + negativeCount}</ReviewCount>
 			<div

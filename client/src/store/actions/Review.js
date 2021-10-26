@@ -1,5 +1,17 @@
 import { url } from "../../constants/url";
 export const GET_SENTIMENT = "GET_SENTIMENT";
+export const DELETE_KEYOWRD = "DELETE_KEYWORD";
+
+export const removeKeyword = (keyword) => {
+	return async (dispatch) => {
+		dispatch({
+			type: DELETE_KEYOWRD,
+			payload: {
+				keyword,
+			},
+		});
+	};
+};
 
 export const getReviews = (data, keyword, positiveCount, negativeCount) => {
 	return async (dispatch) => {
