@@ -236,6 +236,12 @@ const StyledTabs = styled(Tabs)`
 	& .css-11yukd5-MuiTabs-indicator {
 		background-color: #79bda6;
 	}
+	& .css-1mrn996.Mui-selected {
+		color: #79bda6;
+	}
+	& .css-axpu1l {
+		background-color: #79bda6;
+	}
 	& .css-k008qs {
 		justify-content: center;
 	}
