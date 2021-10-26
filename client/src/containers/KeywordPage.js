@@ -113,7 +113,7 @@ export default function KeywordPage(props) {
 					)}
 				</div>
 				<StyledTabs
-					style={{ justifyContent: "center" }}
+					style={{ justifyContent: "center", alignItems: "center" }}
 					value={algo}
 					onChange={handleChange}
 					textColor="secondary"
@@ -210,6 +210,23 @@ const StyledTextField = styled(TextField)`
 		padding: 0;
 		font-size: 2rem;
 	}
+	& .css-2bxn45 {
+		padding: 0;
+		font-size: 2rem;
+		background: #fff;
+		-webkit-text-fill-color: #000;
+		width: 16rem;
+	}
+	& .css-2bxn45.Mui-disabled {
+		padding: 0;
+		font-size: 2rem;
+		background: #fff;
+		-webkit-text-fill-color: #000;
+		width: 16rem;
+	}
+	& .css-q44vsa.Mui-disabled::before {
+		border: 0;
+	}
 `;
 
 const StyledTabs = styled(Tabs)`
@@ -218,6 +235,9 @@ const StyledTabs = styled(Tabs)`
 	}
 	& .css-11yukd5-MuiTabs-indicator {
 		background-color: #79bda6;
+	}
+	& .css-k008qs {
+		justify-content: center;
 	}
 `;
 
