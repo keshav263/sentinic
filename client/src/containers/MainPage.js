@@ -35,14 +35,11 @@ export default function MainPage(props) {
 					Contact
 				</StyledLink>
 			</LinksContainer>
-			<Tag>premium panel for success</Tag>
+			<Tag>premium plan for success</Tag>
 			<Title>
-				Manage your tasks <span> easier</span> and <span>simple</span>
+				Manage your products <span> easy</span> and <span>simple</span>
 			</Title>
-			<SubTitle>
-				The easiest way to help you organise and control your task with fast
-				service
-			</SubTitle>
+			<SubTitle>Monitor your brand reputation on amazon</SubTitle>
 			<GetStartedButton
 				variant="contained"
 				onClick={() => {
@@ -82,7 +79,7 @@ const Title = styled.h1`
 	margin: 0 auto 1rem;
 	font-weight: 400;
 	letter-spacing: 2px;
-	font-size: 4rem;
+	font-size: 3rem;
 	> span {
 		background-clip: text;
 		background: -webkit-linear-gradient(#446962, #79bda6);
@@ -96,7 +93,7 @@ const SubTitle = styled.p`
 	width: 30vw;
 	text-align: center;
 	letter-spacing: 1px;
-	font-size: 0.7rem;
+	font-size: 1rem;
 `;
 
 const Tag = styled.p`

@@ -110,6 +110,12 @@ const Container = styled.div`
 
 const StyledButton = styled(Button)`
 	margin: 1rem 0;
+	color: #000;
+	text-transform: capitalize;
+	font-weight: 500;
+	padding: 0.5rem 1.5rem;
+	border: 1px solid #f3f6f8;
+	background: #f3f6f8;
 	&.css-1rwt2y5-MuiButtonBase-root-MuiButton-root {
 		color: #000;
 		text-transform: capitalize;
