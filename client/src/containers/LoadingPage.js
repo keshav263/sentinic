@@ -44,6 +44,12 @@ export default function LoadingPage(props) {
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	useEffect(() => {
+		if (isAuth) props.history.push("/home");
+		else props.history.push("/get-started");
+	});
+
 	return (
 		<Container>
 			<lottie-player
@@ -62,20 +68,6 @@ export default function LoadingPage(props) {
 					value={progress}
 				/>
 			</Box>
-
-			<StyledButton
-				component={motion.div}
-				animate={controls}
-				initial={{ opacity: 0 }}
-				onClick={() => {
-					if (isAuth) props.history.push("/home");
-					else props.history.push("/login");
-				}}
-				variant="contained"
-				style={{ backgroundColor: "rgba(2, 116, 103,0.8)" }}
-			>
-				{isAuth ? "Go to dashboard" : "Sign in"}
-			</StyledButton>
 		</Container>
 	);
 }
