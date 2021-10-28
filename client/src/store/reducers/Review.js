@@ -1,3 +1,4 @@
+import { LOG_OUT } from "../actions/Auth";
 import {
 	DELETE_KEYOWRD,
 	GET_SENTIMENT,
@@ -40,6 +41,10 @@ export default function ReviewReducer(state = initialState, action) {
 			return {
 				keywords: key,
 			};
+		}
+		case LOG_OUT: {
+			localStorage.clear();
+			return initialState;
 		}
 		default: {
 			return state;
