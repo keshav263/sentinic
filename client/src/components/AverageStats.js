@@ -25,11 +25,7 @@ export default function AverageStats({
 			>
 				{difference > 0 ? <PositiveIcon /> : <RedIcon />}
 				<Difference difference={difference}>
-					{(
-						((positiveCount - negativeCount).toFixed() / revCount) *
-						100
-					).toFixed()}{" "}
-					%
+					{(((positiveCount - negativeCount) / revCount) * 100).toFixed()} %
 				</Difference>
 			</div>
 			{/* <Sentiment difference={difference}>{sentiment}</Sentiment> */}

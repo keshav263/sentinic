@@ -12,6 +12,7 @@ export default function Keywords({ title, positiveCount, negativeCount }) {
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const [isHovering, setIsHovering] = useState(false);
+
 	return (
 		<KeywordStat
 			style={{
@@ -50,9 +51,11 @@ export default function Keywords({ title, positiveCount, negativeCount }) {
 						color: positiveCount - negativeCount > 0 ? "#28b285" : "#f33534",
 					}}
 				>
-					{((positiveCount - negativeCount).toFixed(2) /
-						(positiveCount + negativeCount).toFixed(2)) *
-						100}
+					{(
+						((positiveCount - negativeCount) /
+							(positiveCount + negativeCount)) *
+						100
+					).toFixed(2)}
 				</DifferenceText>
 			</div>
 			<Sentiment>
