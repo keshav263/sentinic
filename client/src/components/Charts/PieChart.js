@@ -2,19 +2,12 @@ import React from "react";
 import { PieChart as Pie } from "react-minimal-pie-chart";
 
 export default function PieChart({ positiveCount, negativeCount }) {
-	let p = (positiveCount / (positiveCount + negativeCount)).toFixed(2);
-	let n = (negativeCount / (positiveCount + negativeCount)).toFixed(2);
-	// console.log(p);
-	if (n * 100 === 56.99999999999999) {
-		n = 57;
-	} else {
-		n = n * 100;
-	}
-	if (p * 100 === 56.99999999999999) {
-		p = 57;
-	} else {
-		p = p * 100;
-	}
+	let p = Number(
+		((positiveCount / (positiveCount + negativeCount)) * 100).toFixed(2)
+	);
+	let n = Number(
+		((negativeCount / (positiveCount + negativeCount)) * 100).toFixed(2)
+	);
 	return (
 		<Pie
 			lineWidth={20}

@@ -12,6 +12,8 @@ const style = {
 	left: "50%",
 	transform: "translate(-50%, -50%)",
 	width: 400,
+	overflow: "scroll",
+	height: "30vh",
 	bgcolor: "background.paper",
 	border: "2px solid #888",
 	boxShadow: 24,
@@ -72,10 +74,6 @@ export default function SentimentHighlight({
 						color="#111830"
 						id="modal-modal-description"
 						sx={{
-							mt: 2,
-							maxLines: 10,
-							maxHeight: "20vh",
-							overflow: "hidden",
 							fontWeight: 400,
 						}}
 					>
