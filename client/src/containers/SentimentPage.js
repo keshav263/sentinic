@@ -6,6 +6,7 @@ import { TextField, useMediaQuery } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import ErrorPage from "./ErrorPage";
+import { device } from "../device";
 
 export default function SentimentPage(props) {
 	const [text, setText] = useState("");
@@ -86,13 +87,6 @@ export default function SentimentPage(props) {
 					</AnimationContainer>
 				)}
 				<StyledTextField
-					style={{
-						fontSize: "4rem",
-						lineHeight: "2rem",
-						width: "50vw",
-						color: "#588878",
-						fontWeight: "lighter",
-					}}
 					variant="standard"
 					value={text}
 					onChange={handleChange}
@@ -185,6 +179,13 @@ const EmojisContainer = styled.div`
 		display: flex;
 		justify-content: space-around;
 	}
+	@media ${device.laptop} {
+		width: 60vw;
+	}
+
+	@media ${device.laptopL} {
+		width: 40vw;
+	}
 `;
 
 const AnimationContainer = styled(motion.div)`
@@ -208,6 +209,14 @@ const StyledTextField = styled(TextField)`
 		color: #588878;
 		font-weight: lighter;
 		margin-top: 40%;
+		@media ${device.laptop} {
+			margin-top: 60%;
+			font-size: 3rem;
+		}
+		@media ${device.laptopL} {
+			margin-top: 40%;
+			font-size: 4rem;
+		}
 	}
 	.css-1x51dt5-MuiInputBase-input-MuiInput-input {
 		font-size: 4rem;
@@ -216,6 +225,14 @@ const StyledTextField = styled(TextField)`
 		color: #588878;
 		font-weight: lighter;
 		margin-top: 40%;
+		@media ${device.laptop} {
+			margin-top: 60%;
+			font-size: 3rem;
+		}
+		@media ${device.laptopL} {
+			margin-top: 40%;
+			font-size: 4rem;
+		}
 	}
 	& .css-1wt0ykv::before {
 		border-bottom: 1px solid #94e6ca;
