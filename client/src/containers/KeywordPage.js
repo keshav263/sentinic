@@ -12,9 +12,11 @@ import Tab from "@mui/material/Tab";
 import useLineStackDataProcessor from "../components/hooks/useLineStackDataProcessor";
 import PieChart from "../components/Charts/PieChart";
 import CreateIcon from "@mui/icons-material/Create";
-import { IconButton, TextField } from "@mui/material";
+import { IconButton, TextField, useMediaQuery } from "@mui/material";
 import * as reviewActions from "../store/actions/Review";
 import CheckIcon from "@mui/icons-material/Check";
+import ErrorPage from "./ErrorPage";
+import { device } from "../device";
 export default function KeywordPage(props) {
 	const data = useSelector((state) =>
 		state.Review.keywords.filter((key) => {
@@ -65,7 +67,6 @@ export default function KeywordPage(props) {
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [algo]);
-	console.log(texts);
 
 	const showHighlights = () => {
 		return texts.map((text, index) => (
@@ -78,6 +79,11 @@ export default function KeywordPage(props) {
 			/>
 		));
 	};
+
+	const isTablet = useMediaQuery("(max-width:768px)");
+	if (isTablet) {
+		return <ErrorPage />;
+	}
 
 	return (
 		<>
@@ -127,7 +133,7 @@ export default function KeywordPage(props) {
 				<Row>
 					<Column>
 						<SubTitle>Product Image</SubTitle>
-						<Row>
+						<ChartRow>
 							<AverageStats
 								difference={positiveCount - negativeCount}
 								negativeCount={negativeCount}
@@ -135,7 +141,7 @@ export default function KeywordPage(props) {
 								revCount={positiveCount + negativeCount}
 							/>
 							<LineChart lineData={lineData} />
-						</Row>
+						</ChartRow>
 						<SubTitle style={{ transform: "translateY(20px)", zIndex: 1 }}>
 							Sentiments Summary
 						</SubTitle>
@@ -270,8 +276,18 @@ const SubTitle = styled.p`
 	font-size: 1rem;
 `;
 
+const ChartRow = styled.div`
+	display: flex;
+`;
+
 const Row = styled.div`
 	display: flex;
+	@media ${device.laptop} {
+		flex-direction: column;
+	}
+	@media ${device.laptopL} {
+		flex-direction: row;
+	}
 `;
 
 const Column = styled.div`

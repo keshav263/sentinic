@@ -1,12 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-import { Button, Link } from "@mui/material";
+import { Button, Link, Tooltip, useMediaQuery } from "@mui/material";
 import Pic from "../assets/stat.png";
 import Home from "../assets/home.png";
 import { useSelector } from "react-redux";
+import { device } from "../device";
+import ErrorPage from "./ErrorPage";
 export default function MainPage(props) {
 	const isAuth = useSelector((state) => state.Auth.isAuth);
-
+	const isTablet = useMediaQuery("(max-width:768px)");
+	if (isTablet) {
+		return <ErrorPage />;
+	}
 	return (
 		<Container>
 			<Header>
@@ -23,17 +28,23 @@ export default function MainPage(props) {
 				</StyledButton>
 			</Header>
 			<LinksContainer>
-				<StyledLink underline="none" href="#">
-					About
-				</StyledLink>
+				<Tooltip title="Dummy">
+					<StyledLink underline="none" href="#">
+						About
+					</StyledLink>
+				</Tooltip>
 				<span>/</span>
-				<StyledLink underline="none" href="#">
-					Pricing
-				</StyledLink>
+				<Tooltip title="Dummy">
+					<StyledLink underline="none" href="#">
+						Pricing
+					</StyledLink>
+				</Tooltip>
 				<span>/</span>
-				<StyledLink underline="none" href="#">
-					Contact
-				</StyledLink>
+				<Tooltip title="Dummy">
+					<StyledLink underline="none" href="#">
+						Contact
+					</StyledLink>
+				</Tooltip>
 			</LinksContainer>
 			<Tag>premium plan for success</Tag>
 			<Title>
@@ -86,6 +97,10 @@ const Title = styled.h1`
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 	}
+	@media ${device.laptop} {
+		font-size: 2.5rem;
+		width: 55vw;
+	}
 `;
 
 const SubTitle = styled.p`
@@ -94,6 +109,9 @@ const SubTitle = styled.p`
 	text-align: center;
 	letter-spacing: 1px;
 	font-size: 1rem;
+	@media ${device.laptop} {
+		font-size: 0.8rem;
+	}
 `;
 
 const Tag = styled.p`
@@ -102,6 +120,9 @@ const Tag = styled.p`
 	margin: 3rem auto 1rem;
 	width: 20vw;
 	text-align: center;
+	@media ${device.laptop} {
+		width: 30vw;
+	}
 `;
 
 const LinksContainer = styled.div`
@@ -113,6 +134,9 @@ const LinksContainer = styled.div`
 	box-sizing: border-box;
 	margin: 0 auto;
 	transform: translateY(-150%);
+	@media ${device.laptop} {
+		width: 24vw;
+	}
 `;
 
 const StyledLink = styled(Link)`

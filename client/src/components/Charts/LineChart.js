@@ -1,16 +1,16 @@
 import React from "react";
 import Chart from "react-google-charts";
+import styled from "styled-components";
 import { CircularProgress } from "@mui/material";
+import { device } from "../../device";
 
 export default function LineChart({ lineData }) {
 	return (
-		<Chart
-			width={"400px"}
-			height={"200px"}
+		<StyledChart
 			style={{ marginLeft: "20px" }}
 			chartType="Line"
 			loader={
-				<div
+				<ProgressContainer
 					style={{
 						width: "400px",
 						height: "200px",
@@ -20,7 +20,7 @@ export default function LineChart({ lineData }) {
 					}}
 				>
 					<CircularProgress />
-				</div>
+				</ProgressContainer>
 			}
 			data={lineData}
 			options={{
@@ -53,3 +53,20 @@ export default function LineChart({ lineData }) {
 		/>
 	);
 }
+
+const StyledChart = styled(Chart)`
+	@media ${device.laptop} {
+		width: 65vw;
+	}
+	@media ${device.laptopL} {
+		width: 25vw;
+	}
+`;
+
+const ProgressContainer = styled.div`
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+`;

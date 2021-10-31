@@ -6,18 +6,18 @@ import Chart from "react-google-charts";
 import AverageStats from "../components/AverageStats";
 import NavBar from "../components/NavBar";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, CircularProgress, IconButton } from "@mui/material";
+import { CircularProgress, useMediaQuery } from "@mui/material";
 import { Snackbar } from "@mui/material";
 import socket, { ConnectMe } from "../socketIo";
 import * as reviewActions from "../store/actions/Review";
-import CloseIcon from "@mui/icons-material/Close";
 import useLineStackAverageDataProcessor from "../components/hooks/useLineStackAverageDataProcessor";
+import ErrorPage from "./ErrorPage";
+import { device } from "../device";
 
 export default function LandingPage(props) {
 	const key = useSelector((state) => state.Review.keywords);
 	const isAuth = useSelector((state) => state.Auth.isAuth);
 	const dispatch = useDispatch();
-	const [keywords, setKeywords] = useState(key);
 	const [stackData, setStackData] = useState([]);
 	const [lineData, setLineData] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
@@ -25,7 +25,6 @@ export default function LandingPage(props) {
 	const [negativeCount, setNegativeCount] = useState(0);
 	const [getLineStackProcessedData] = useLineStackAverageDataProcessor();
 	const [openSnack, setOpenSnack] = useState(false);
-	// console.log(keywords);
 	const getAllKeywords = () => {
 		return key?.map((key, index) => {
 			return (
@@ -85,6 +84,12 @@ export default function LandingPage(props) {
 		});
 	}, [dispatch, getStats]);
 
+	const isTablet = useMediaQuery("(max-width:768px)");
+	const isLaptop = useMediaQuery("(max-width:1024px)");
+	if (isTablet) {
+		return <ErrorPage />;
+	}
+
 	if (isLoading)
 		return (
 			<Container
@@ -111,76 +116,62 @@ export default function LandingPage(props) {
 				<Title>Average Product Image</Title>
 				{key.length > 0 ? (
 					<Row>
-						<AverageStats
-							difference={positiveCount - negativeCount}
-							revCount={positiveCount + negativeCount}
-							positiveCount={positiveCount}
-							negativeCount={negativeCount}
-						/>
+						<div style={{ display: "flex", alignItems: "center" }}>
+							<AverageStats
+								difference={positiveCount - negativeCount}
+								revCount={positiveCount + negativeCount}
+								positiveCount={positiveCount}
+								negativeCount={negativeCount}
+							/>
+							<Chart
+								width={isLaptop ? "60vw" : "35vw"}
+								height={"200px"}
+								style={{ marginLeft: "20px" }}
+								chartType="Line"
+								loader={
+									<ProgressContainer>
+										<CircularProgress />
+									</ProgressContainer>
+								}
+								data={lineData}
+								options={{
+									legend: { position: "none" },
+									colors: ["green", "#f23534"],
+									axes: {
+										y: {
+											0: { side: "right" },
+										},
+									},
+									animation: {
+										startup: true,
+										easing: "linear",
+										duration: 1500,
+									},
+								}}
+								chartEvents={[
+									{
+										eventName: "animationfinish",
+										callback: () => {
+											console.log("Animation Finished");
+										},
+									},
+								]}
+								rootProps={{ "data-testid": "3" }}
+							/>
+						</div>
 						<Chart
-							width={"500px"}
+							width={isLaptop ? "80vw" : "35vw"}
 							height={"200px"}
-							style={{ marginLeft: "20px" }}
-							chartType="Line"
-							loader={
-								<div
-									style={{
-										width: "500px",
-										height: "200px",
-										display: "flex",
-										alignItems: "center",
-										justifyContent: "center",
-									}}
-								>
-									<CircularProgress />
-								</div>
-							}
-							data={lineData}
-							options={{
-								legend: { position: "none" },
-								colors: ["green", "#f23534"],
-								axes: {
-									y: {
-										0: { side: "right" },
-									},
-								},
-								animation: {
-									startup: true,
-									easing: "linear",
-									duration: 1500,
-								},
-							}}
-							chartEvents={[
-								{
-									eventName: "animationfinish",
-									callback: () => {
-										console.log("Animation Finished");
-									},
-								},
-							]}
-							rootProps={{ "data-testid": "3" }}
-						/>
-						<Chart
-							width={"500px"}
-							height={"250px"}
 							chartType="ColumnChart"
 							loader={
-								<div
-									style={{
-										width: "500px",
-										height: "200px",
-										display: "flex",
-										alignItems: "center",
-										justifyContent: "center",
-									}}
-								>
+								<ProgressContainer>
 									<CircularProgress />
-								</div>
+								</ProgressContainer>
 							}
 							data={stackData}
 							options={{
 								title: "Average sentiment across months",
-								chartArea: { width: "70%" },
+								chartArea: { width: "100%" },
 								isStacked: true,
 								hAxis: {
 									title: "Month",
@@ -237,9 +228,26 @@ export default function LandingPage(props) {
 	);
 }
 
+const ProgressContainer = styled.div`
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+`;
+
 const Row = styled.div`
 	display: flex;
 	align-items: center;
+	@media ${device.laptop} {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	@media ${device.laptopL} {
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
 `;
 
 const Container = styled.div`

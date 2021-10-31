@@ -1,13 +1,14 @@
-import { Button, Divider } from "@mui/material";
+import { Button, Divider, useMediaQuery } from "@mui/material";
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import Pic from "../assets/stat.png";
 import { FcGoogle } from "react-icons/fc";
 import { HiUser } from "react-icons/hi";
 import { signInAnonymously, signInWithPopup } from "@firebase/auth";
 import { auth, provider } from "../firebase/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import * as authActions from "../store/actions/Auth";
+import { device } from "../device";
+import ErrorPage from "./ErrorPage";
 export default function AuthPage(props) {
 	const dispatch = useDispatch();
 	const isAuth = useSelector((state) => state.Auth.isAuth);
@@ -48,6 +49,11 @@ export default function AuthPage(props) {
 			props.history.push("/home");
 		}
 	}, [isAuth, props]);
+
+	const isTablet = useMediaQuery("(max-width:768px)");
+	if (isTablet) {
+		return <ErrorPage />;
+	}
 
 	return (
 		<Container>
@@ -100,6 +106,12 @@ const Background = styled.div`
 	background-size: cover;
 	height: 100vh;
 	width: 70vw;
+	@media ${device.laptop} {
+		width: 60vw;
+	}
+	@media ${device.laptopL} {
+		width: 70vw;
+	}
 `;
 
 const Container = styled.div`
@@ -133,6 +145,12 @@ const SubContainer = styled.div`
 	justify-content: center;
 	background-color: #fff;
 	width: 30vw;
+	@media ${device.laptop} {
+		width: 40vw;
+	}
+	@media ${device.laptopL} {
+		width: 30vw;
+	}
 `;
 
 const Title = styled.p`
@@ -150,8 +168,10 @@ const SubTitle = styled.p`
 	font-weight: 500;
 	font-size: 2.5rem;
 	text-align: left;
-`;
-
-const LogoPic = styled.img`
-	height: 2.5rem;
+	@media ${device.laptop} {
+		font-size: 2rem;
+	}
+	@media ${device.laptopL} {
+		font-size: 2.5rem;
+	}
 `;

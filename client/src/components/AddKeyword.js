@@ -10,7 +10,7 @@ import {
 import { makeStyles } from "@mui/styles";
 
 import * as reviewActions from "../store/actions/Review";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 const useStyles = makeStyles((theme) => ({
 	margin: {
 		"& .MuiOutlinedInput-input": {
