@@ -129,15 +129,7 @@ export default function LandingPage(props) {
 								style={{ marginLeft: "20px" }}
 								chartType="Line"
 								loader={
-									<ProgressContainer
-										style={{
-											width: "500px",
-											height: "200px",
-											display: "flex",
-											alignItems: "center",
-											justifyContent: "center",
-										}}
-									>
+									<ProgressContainer>
 										<CircularProgress />
 									</ProgressContainer>
 								}
@@ -172,15 +164,7 @@ export default function LandingPage(props) {
 							height={"200px"}
 							chartType="ColumnChart"
 							loader={
-								<ProgressContainer
-									style={{
-										width: "500px",
-										height: "200px",
-										display: "flex",
-										alignItems: "center",
-										justifyContent: "center",
-									}}
-								>
+								<ProgressContainer>
 									<CircularProgress />
 								</ProgressContainer>
 							}
@@ -245,8 +229,8 @@ export default function LandingPage(props) {
 }
 
 const ProgressContainer = styled.div`
-	width: 500px;
-	height: 200px;
+	width: 100%;
+	height: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: center;

@@ -16,6 +16,7 @@ import { IconButton, TextField, useMediaQuery } from "@mui/material";
 import * as reviewActions from "../store/actions/Review";
 import CheckIcon from "@mui/icons-material/Check";
 import ErrorPage from "./ErrorPage";
+import { device } from "../device";
 export default function KeywordPage(props) {
 	const data = useSelector((state) =>
 		state.Review.keywords.filter((key) => {
@@ -132,7 +133,7 @@ export default function KeywordPage(props) {
 				<Row>
 					<Column>
 						<SubTitle>Product Image</SubTitle>
-						<Row>
+						<ChartRow>
 							<AverageStats
 								difference={positiveCount - negativeCount}
 								negativeCount={negativeCount}
@@ -140,7 +141,7 @@ export default function KeywordPage(props) {
 								revCount={positiveCount + negativeCount}
 							/>
 							<LineChart lineData={lineData} />
-						</Row>
+						</ChartRow>
 						<SubTitle style={{ transform: "translateY(20px)", zIndex: 1 }}>
 							Sentiments Summary
 						</SubTitle>
@@ -275,8 +276,18 @@ const SubTitle = styled.p`
 	font-size: 1rem;
 `;
 
+const ChartRow = styled.div`
+	display: flex;
+`;
+
 const Row = styled.div`
 	display: flex;
+	@media ${device.laptop} {
+		flex-direction: column;
+	}
+	@media ${device.laptopL} {
+		flex-direction: row;
+	}
 `;
 
 const Column = styled.div`

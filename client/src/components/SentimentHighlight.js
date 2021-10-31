@@ -5,12 +5,13 @@ import RedIcon from "./RedIcon";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import { device } from "../device";
 const style = {
 	position: "absolute",
 	top: "50%",
 	left: "50%",
 	transform: "translate(-50%, -50%)",
-	width: 400,
+	width: "40vw",
 	overflow: "scroll",
 	height: "30vh",
 	bgcolor: "background.paper",
@@ -37,11 +38,6 @@ export default function SentimentHighlight({
 					}}
 				>
 					{difference === "+1" ? <PositiveIcon /> : <RedIcon />}
-					{/* <Difference
-					style={{ color: difference === "+1" ? "#19b682" : "#f33534" }}
-				>
-					{difference}
-				</Difference> */}
 				</div>
 				<div>
 					<Sentiment>
@@ -90,13 +86,18 @@ const Container = styled.div`
 	overflow: hidden;
 	width: 40vw;
 	padding: 10px;
-	height: 6vh;
 	cursor: pointer;
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
 	:nth-child(odd) {
 		background-color: #fff;
+	}
+	@media ${device.laptop} {
+		width: 80vw;
+	}
+	@media ${device.laptopL} {
+		width: 40vw;
 	}
 `;
 
@@ -115,6 +116,12 @@ const Text = styled.p`
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
+	@media ${device.laptop} {
+		width: 50vw;
+	}
+	@media ${device.laptopL} {
+		width: 20vw;
+	}
 `;
 
 const DateText = styled.p`
