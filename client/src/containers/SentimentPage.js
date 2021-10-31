@@ -209,7 +209,14 @@ const StyledTextField = styled(TextField)`
 		font-weight: lighter;
 		margin-top: 40%;
 	}
-
+	.css-1x51dt5-MuiInputBase-input-MuiInput-input {
+		font-size: 4rem;
+		line-height: 2rem;
+		width: 50vw;
+		color: #588878;
+		font-weight: lighter;
+		margin-top: 40%;
+	}
 	& .css-1wt0ykv::before {
 		border-bottom: 1px solid #94e6ca;
 	}
