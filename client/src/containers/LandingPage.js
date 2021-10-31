@@ -229,11 +229,15 @@ export default function LandingPage(props) {
 }
 
 const ProgressContainer = styled.div`
-	width: 100%;
-	height: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	@media ${device.laptop} {
+		width: 60vw;
+	}
+	@media ${device.laptopL} {
+		width: 35vw;
+	}
 `;
 
 const Row = styled.div`
@@ -259,4 +263,5 @@ const Title = styled.p`
 `;
 const KeywordsContainer = styled.div`
 	display: flex;
+	overflow-x: scroll;
 `;

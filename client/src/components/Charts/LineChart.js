@@ -10,15 +10,7 @@ export default function LineChart({ lineData }) {
 			style={{ marginLeft: "20px" }}
 			chartType="Line"
 			loader={
-				<ProgressContainer
-					style={{
-						width: "400px",
-						height: "200px",
-						display: "flex",
-						alignItems: "center",
-						justifyContent: "center",
-					}}
-				>
+				<ProgressContainer>
 					<CircularProgress />
 				</ProgressContainer>
 			}
@@ -64,9 +56,13 @@ const StyledChart = styled(Chart)`
 `;
 
 const ProgressContainer = styled.div`
-	width: 100%;
-	height: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	@media ${device.laptop} {
+		width: 65vw;
+	}
+	@media ${device.laptopL} {
+		width: 25vw;
+	}
 `;
