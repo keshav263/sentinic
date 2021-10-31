@@ -62,9 +62,13 @@ const StyledChart = styled(Chart)`
 `;
 
 const ProgressContainer = styled.div`
-	width: 100%;
-	height: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	@media ${device.laptop} {
+		width: 85vw;
+	}
+	@media ${device.laptopL} {
+		width: 35vw;
+	}
 `;
