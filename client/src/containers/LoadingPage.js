@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import LinearProgress from "@mui/material/LinearProgress";
-import { motion, useAnimation } from "framer-motion";
+import { useAnimation } from "framer-motion";
 import Box from "@mui/material/Box";
 import { makeStyles } from "@mui/styles";
-import { Button } from "@mui/material";
 import { useSelector } from "react-redux";
 
 const useStyles = makeStyles(({ theme }) => ({
@@ -71,10 +70,6 @@ export default function LoadingPage(props) {
 		</Container>
 	);
 }
-
-const StyledButton = styled(Button)`
-	margin-top: 40px !important;
-`;
 
 const Container = styled.div`
 	width: 100vw;

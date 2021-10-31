@@ -3,7 +3,6 @@ import styled from "styled-components";
 import PositiveIcon from "./PositiveIcon";
 import RedIcon from "./RedIcon";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 const style = {

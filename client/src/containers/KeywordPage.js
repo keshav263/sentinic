@@ -12,9 +12,10 @@ import Tab from "@mui/material/Tab";
 import useLineStackDataProcessor from "../components/hooks/useLineStackDataProcessor";
 import PieChart from "../components/Charts/PieChart";
 import CreateIcon from "@mui/icons-material/Create";
-import { IconButton, TextField } from "@mui/material";
+import { IconButton, TextField, useMediaQuery } from "@mui/material";
 import * as reviewActions from "../store/actions/Review";
 import CheckIcon from "@mui/icons-material/Check";
+import ErrorPage from "./ErrorPage";
 export default function KeywordPage(props) {
 	const data = useSelector((state) =>
 		state.Review.keywords.filter((key) => {
@@ -65,7 +66,6 @@ export default function KeywordPage(props) {
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [algo]);
-	console.log(texts);
 
 	const showHighlights = () => {
 		return texts.map((text, index) => (
@@ -78,6 +78,11 @@ export default function KeywordPage(props) {
 			/>
 		));
 	};
+
+	const isTablet = useMediaQuery("(max-width:768px)");
+	if (isTablet) {
+		return <ErrorPage />;
+	}
 
 	return (
 		<>

@@ -2,9 +2,10 @@ import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import NavBar from "../components/NavBar";
 import * as reviewActions from "../store/actions/Review";
-import { TextField } from "@mui/material";
+import { TextField, useMediaQuery } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
+import ErrorPage from "./ErrorPage";
 
 export default function SentimentPage(props) {
 	const [text, setText] = useState("");
@@ -53,6 +54,11 @@ export default function SentimentPage(props) {
 			props.history.push("/login");
 		}
 	}, [isAuth, props]);
+
+	const isTablet = useMediaQuery("(max-width:768px)");
+	if (isTablet) {
+		return <ErrorPage />;
+	}
 	return (
 		<>
 			<NavBar />

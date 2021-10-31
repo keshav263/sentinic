@@ -6,18 +6,17 @@ import Chart from "react-google-charts";
 import AverageStats from "../components/AverageStats";
 import NavBar from "../components/NavBar";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, CircularProgress, IconButton } from "@mui/material";
+import { CircularProgress, useMediaQuery } from "@mui/material";
 import { Snackbar } from "@mui/material";
 import socket, { ConnectMe } from "../socketIo";
 import * as reviewActions from "../store/actions/Review";
-import CloseIcon from "@mui/icons-material/Close";
 import useLineStackAverageDataProcessor from "../components/hooks/useLineStackAverageDataProcessor";
+import ErrorPage from "./ErrorPage";
 
 export default function LandingPage(props) {
 	const key = useSelector((state) => state.Review.keywords);
 	const isAuth = useSelector((state) => state.Auth.isAuth);
 	const dispatch = useDispatch();
-	const [keywords, setKeywords] = useState(key);
 	const [stackData, setStackData] = useState([]);
 	const [lineData, setLineData] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
@@ -25,7 +24,6 @@ export default function LandingPage(props) {
 	const [negativeCount, setNegativeCount] = useState(0);
 	const [getLineStackProcessedData] = useLineStackAverageDataProcessor();
 	const [openSnack, setOpenSnack] = useState(false);
-	// console.log(keywords);
 	const getAllKeywords = () => {
 		return key?.map((key, index) => {
 			return (
@@ -84,6 +82,11 @@ export default function LandingPage(props) {
 			// getStats();
 		});
 	}, [dispatch, getStats]);
+
+	const isTablet = useMediaQuery("(max-width:768px)");
+	if (isTablet) {
+		return <ErrorPage />;
+	}
 
 	if (isLoading)
 		return (
