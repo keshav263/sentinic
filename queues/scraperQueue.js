@@ -8,20 +8,28 @@ const scraperQueue = new Queue("Web Scraping", REDIS_URL);
 scraperQueue.process(async (job, done) => {
   try {
     const { name, url, _id } = job.data;
+    console.log("Starting scraping");
     const scraped = await spawn("python", ["scraper.py", url]);
+    console.log("Scraped successfully");
     const logistic = await spawn("python", ["logistic.py"]);
+    console.log("Running Logistic");
     const randomForest = await spawn("python", ["rf.py"]);
+    console.log("Running Random Forest");
+
     const supportVector = await spawn("python", ["svm.py"]);
+    console.log("Running Random Forest");
+
     let lr = logistic.toString();
 
     let rf = randomForest.toString();
 
     let svm = supportVector.toString();
-
+    console.log("CONV");
     const content = await csv().fromFile("amazon_review.csv");
 
     const review = new Review({ name, url, content });
     await review.save();
+    console.log("SAVED");
     done(null, {
       status: "Reviews Scraped",
       lr,

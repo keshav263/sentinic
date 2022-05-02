@@ -20,9 +20,16 @@ var csv = require("csvtojson");
 const { scraperQueue } = require("./queues/scraperQueue");
 const { Review } = require("./models/Review");
 
+// const io = require("socket.io")(http, {
+//   cors: {
+//     origin: "https://prod.d32hu1nn577xzj.amplifyapp.com",
+//     methods: ["GET", "POST"],
+//   },
+// });
+
 const io = require("socket.io")(http, {
   cors: {
-    origin: "https://prod.d32hu1nn577xzj.amplifyapp.com",
+    origin: "http://localhost:3001",
     methods: ["GET", "POST"],
   },
 });
@@ -55,6 +62,7 @@ app.post("/scrape-reviews", (req, res) => {
     res.status(200).send({ status: "Processing" });
   } catch (error) {
     console.log(error);
+    return res.status(400).send({ status: "Error" });
   }
 });
 
@@ -75,17 +83,21 @@ io.on("connection", (socket) => {
     if (socket._id === job.returnvalue.socketId) {
       console.log(socket.id);
       console.log(socket._id === job.returnvalue.socketId);
-      const review = await Review.findById({ _id: job.returnvalue._id });
-      let lr = JSON.parse(job.returnvalue.lr);
-      let rf = JSON.parse(job.returnvalue.rf);
-      let svm = JSON.parse(job.returnvalue.svm);
+      try {
+        const review = await Review.findById({ _id: job.returnvalue._id });
+        let lr = JSON.parse(job.returnvalue.lr);
+        let rf = JSON.parse(job.returnvalue.rf);
+        let svm = JSON.parse(job.returnvalue.svm);
 
-      io.to(socket.id).emit("scraped_data", {
-        data: review.content,
-        keyword: review.name,
-        positiveCount: (lr[1] + svm[1] + rf[1]) / 3,
-        negativeCount: (lr[0] + rf[0] + svm[0]) / 3,
-      });
+        io.to(socket.id).emit("scraped_data", {
+          data: review.content,
+          keyword: review.name,
+          positiveCount: (lr[1] + svm[1] + rf[1]) / 3,
+          negativeCount: (lr[0] + rf[0] + svm[0]) / 3,
+        });
+      } catch (error) {
+        console.log("Something went wrong");
+      }
     }
   });
 });
