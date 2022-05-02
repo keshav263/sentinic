@@ -18,7 +18,7 @@ scraperQueue.process(async (job, done) => {
 
 		console.log("Starting scraping");
 		const scraped = await spawn("python", ["scraper.py", url]);
-		console.log(scraped);
+		console.log(scraped.toString());
 		console.log("Scraping completed");
 
 		console.log("Scraped successfully");
@@ -52,7 +52,7 @@ scraperQueue.process(async (job, done) => {
 		});
 		// throw new Error("Something went wrong");
 	} catch (error) {
-		console.log(error);
+		console.log(error?.toString());
 		done(new Error("Something went wrong"));
 	}
 });
