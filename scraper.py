@@ -99,7 +99,7 @@ url = sys.argv[1];
 url += ticker
 
 for i in range(1,51):
-  url1= f"{url}{i}"
+  url1= "{}{}".format(url,i)
   soup = html_code(url1)
   cus_reviews(soup)
 
