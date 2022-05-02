@@ -19,61 +19,64 @@ cus_res6=[]
 
 #function to parse the required data from each review page
 def cus_reviews(soup):
-  review = soup.find("div",class_="a-section a-spacing-none reviews-content a-size-base")
+  try:
+    review = soup.find("div",class_="a-section a-spacing-none reviews-content a-size-base")
 
-  for element in review.find_all("div",{'data-hook':"review"}): 
+    for element in review.find_all("div",{'data-hook':"review"}): 
 
-    item = element.find("span", class_="a-profile-name") #name
-    try:
-      cus_res1.append(item.get_text())
-    except:
-      cus_res1.append('xxx')
-    
-    item = element.find("span", {'data-hook':"review-date"}) #date
-    try:
-      s=item.get_text()
-      x=s.find(" on ")
-      s=s[x+4:]
-      date=datetime.datetime.strptime(s,"%d %B %Y").strftime("%Y-%m-%d")
-    except:
-      date=datetime.datetime(2018, 9, 15)
-    cus_res2.append(date)
+      item = element.find("span", class_="a-profile-name") #name
+      try:
+        cus_res1.append(item.get_text())
+      except:
+        cus_res1.append('xxx')
 
-    item = element.find("a", {'data-hook':"review-title"}) #title
-    try:
-      cus_res3.append(item.get_text().replace("\n",""))
-    except:
-      cus_res3.append('xxx')
+      item = element.find("span", {'data-hook':"review-date"}) #date
+      try:
+        s=item.get_text()
+        x=s.find(" on ")
+        s=s[x+4:]
+        date=datetime.datetime.strptime(s,"%d %B %Y").strftime("%Y-%m-%d")
+      except:
+        date=datetime.datetime(2018, 9, 15)
+      cus_res2.append(date)
 
-    item = element.find("span",{'data-hook':"review-body"}) #review
-    try:
-      s1=item.get_text()
-      s1= s1.replace("\xa0","").replace("\n\n","").lstrip()
-    except:
-      s1='xxx'    
-    cus_res4.append(s1)
+      item = element.find("a", {'data-hook':"review-title"}) #title
+      try:
+        cus_res3.append(item.get_text().replace("\n",""))
+      except:
+        cus_res3.append('xxx')
 
-    flag=0
-    for item in element.find_all("span", {'data-hook':"helpful-vote-statement"}): #vote
-        flag=1
-        try:
-          s=item.get_text()
-          if s[0]=="O":
-            s=1
-          else:
-            x=s.find("p")
-            s=int(s[:x-1].replace(",",""))        
-          cus_res5.append(s)
-        except:
-          flag=0
-    if flag==0:
-      cus_res5.append(0)
-    
-    item = element.find("i", {'data-hook':"review-star-rating"}) #rating
-    try:
-      cus_res6.append(int(item.get_text()[0]))
-    except:
-      cus_res6.append(1)
+      item = element.find("span",{'data-hook':"review-body"}) #review
+      try:
+        s1=item.get_text()
+        s1= s1.replace("\xa0","").replace("\n\n","").lstrip()
+      except:
+        s1='xxx'    
+      cus_res4.append(s1)
+
+      flag=0
+      for item in element.find_all("span", {'data-hook':"helpful-vote-statement"}): #vote
+          flag=1
+          try:
+            s=item.get_text()
+            if s[0]=="O":
+              s=1
+            else:
+              x=s.find("p")
+              s=int(s[:x-1].replace(",",""))        
+            cus_res5.append(s)
+          except:
+            flag=0
+      if flag==0:
+        cus_res5.append(0)
+
+      item = element.find("i", {'data-hook':"review-star-rating"}) #rating
+      try:
+        cus_res6.append(int(item.get_text()[0]))
+      except:
+        cus_res6.append(1)
+  except:
+    print("Error in first function")
  
 HEADERS = ({'User-Agent':
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
@@ -82,26 +85,38 @@ HEADERS = ({'User-Agent':
             'Accept-Language': 'en-US, en;q=0.5'}) 
 
 #make request to website
-def getdata(url): 
+def getdata(url):
+  try: 
     r = requests.get(url, headers=HEADERS)
     return r.text 
+  except:
+    print("Error in getdata function")
 
 #html code scraped into beautiful soup object
 def html_code(url):
+  try:
     htmldata = getdata(url)
     soup = BeautifulSoup(htmldata, 'html.parser')
     return (soup) 
+  except:
+    print("Error in html_code function")
 
 #url formatting
-ticker="&pageNumber=" 
-url = sys.argv[1];
-# url="https://www.amazon.in/Mediabridge-FLEX-Ethernet-Category-Certified/product-reviews/B004LTE5JI/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
-url += ticker
+try:
+  ticker="&pageNumber=" 
+  url = sys.argv[1];
+  # url="https://www.amazon.in/Mediabridge-FLEX-Ethernet-Category-Certified/product-reviews/B004LTE5JI/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
+  url += ticker
+except:
+  print("Error in url formatting")
 
-for i in range(1,51):
-  url1= "{}{}".format(url,i)
-  soup = html_code(url1)
-  cus_reviews(soup)
+try:
+  for i in range(1,51):
+    url1= "{}{}".format(url,i)
+    soup = html_code(url1)
+    cus_reviews(soup)
+except:
+  print("Error in for loop")
 
 # initialise the data dictionary
 data = {'name': cus_res1,'date':cus_res2,'title':cus_res3,'review': cus_res4,'vote':cus_res5,'rating':cus_res6}
